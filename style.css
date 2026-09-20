@@ -1,0 +1,1034 @@
+/* ==========================================================================
+   Exam PDF Studio - Modern Stylesheet
+   ========================================================================== */
+
+:root {
+  --bg-app: #0f172a;
+  --bg-sidebar: #1e293b;
+  --bg-card: #243047;
+  --border-color: #334155;
+  --border-focus: #3b82f6;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --success: #10b981;
+  --danger: #ef4444;
+  --paper-bg: #ffffff;
+  --paper-ink: #000000;
+  --shadow-paper: 0 15px 35px rgba(0, 0, 0, 0.4), 0 5px 15px rgba(0, 0, 0, 0.2);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --transition: all 0.2s ease-in-out;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+}
+
+/* App Container Layout */
+.app-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* ==========================================================================
+   Left Sidebar & Form Styles
+   ========================================================================== */
+.sidebar {
+  width: 440px;
+  min-width: 380px;
+  background-color: var(--bg-sidebar);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  z-index: 20;
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.25);
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+.sidebar::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+.sidebar-header {
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-bottom: 1px solid var(--border-color);
+  background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%);
+}
+
+.sidebar-header .logo-icon {
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+}
+
+.sidebar-header h2 {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  color: #fff;
+}
+
+.sidebar-header .subtitle {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.form-card {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.card-title {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #60a5fa;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-group label .required {
+  color: #f87171;
+  font-weight: bold;
+}
+
+.badge {
+  font-size: 10px;
+  background: rgba(59, 130, 246, 0.15);
+  color: #93c5fd;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.form-row {
+  display: flex;
+  gap: 12px;
+}
+
+.form-row .col {
+  flex: 1;
+}
+
+.form-input, .form-textarea {
+  width: 100%;
+  padding: 10px 14px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 13.5px;
+  font-family: inherit;
+  transition: var(--transition);
+}
+
+.form-input:focus, .form-textarea:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+  background-color: #2b3954;
+}
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-with-icon i {
+  position: absolute;
+  left: 12px;
+  font-size: 13px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.input-with-icon .form-input {
+  padding-left: 36px;
+}
+
+/* Accordion for optional fields */
+.accordion-item {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: rgba(15, 23, 42, 0.5);
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.accordion-toggle {
+  width: 100%;
+  padding: 12px 14px;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.accordion-toggle:hover {
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-primary);
+}
+
+.accordion-toggle .toggle-arrow {
+  transition: transform 0.2s ease;
+  font-size: 11px;
+}
+
+.accordion-toggle.active .toggle-arrow {
+  transform: rotate(180deg);
+}
+
+.accordion-content {
+  display: none;
+  padding: 14px;
+  border-top: 1px solid var(--border-color);
+  background: rgba(15, 23, 42, 0.7);
+}
+
+.accordion-content.open {
+  display: block;
+}
+
+.range-slider {
+  width: 100%;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.range-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* Page Repetition Controls */
+.repetition-control-card {
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  margin-bottom: 14px;
+}
+
+.repeat-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.btn-repeat {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 12.5px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-repeat:hover {
+  background: #2d3b55;
+  color: var(--text-primary);
+  border-color: #475569;
+}
+
+.btn-repeat.active {
+  background: #1e3a8a;
+  color: #93c5fd;
+  border-color: #3b82f6;
+  font-weight: 600;
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.25);
+}
+
+.repeat-options {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--border-color);
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+  accent-color: var(--primary);
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  border: none;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #1d4ed8, #1e40af);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.45);
+}
+
+.btn-secondary {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+  background: #2e3d5b;
+  border-color: #475569;
+}
+
+.secondary-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.btn-text {
+  background: none;
+  border: none;
+  color: #60a5fa;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 4px;
+  transition: var(--transition);
+}
+
+.btn-text:hover {
+  color: #93c5fd;
+  text-decoration: underline;
+}
+
+.btn-text.text-danger {
+  color: #f87171;
+}
+.btn-text.text-danger:hover {
+  color: #fca5a5;
+}
+
+.tip-box {
+  margin-top: 18px;
+  background: rgba(59, 130, 246, 0.08);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  display: flex;
+  gap: 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #93c5fd;
+}
+
+.tip-box i {
+  color: #fbbf24;
+  font-size: 15px;
+  margin-top: 2px;
+}
+
+/* Instagram Creator Connect Card */
+.instagram-card {
+  margin-top: 14px;
+  background: linear-gradient(135deg, rgba(225, 48, 108, 0.12), rgba(131, 58, 180, 0.12));
+  border: 1px solid rgba(225, 48, 108, 0.28);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.instagram-card-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.instagram-icon-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 18px;
+  box-shadow: 0 4px 10px rgba(220, 39, 67, 0.35);
+  flex-shrink: 0;
+}
+
+.instagram-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.instagram-title {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.instagram-username {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.2px;
+}
+
+.instagram-follow-btn {
+  background: linear-gradient(45deg, #f09433 0%, #dc2743 50%, #bc1888 100%);
+  color: #ffffff;
+  padding: 7px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 3px 10px rgba(220, 39, 67, 0.3);
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.instagram-follow-btn:hover {
+  transform: translateY(-1px) scale(1.03);
+  box-shadow: 0 5px 14px rgba(220, 39, 67, 0.5);
+  color: #ffffff;
+}
+
+/* Topbar Instagram Button */
+.topbar-instagram-btn {
+  background: rgba(225, 48, 108, 0.15);
+  border: 1px solid rgba(225, 48, 108, 0.3);
+  color: #f472b6;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  transition: var(--transition);
+}
+
+.topbar-instagram-btn i {
+  font-size: 14px;
+  color: #fb7185;
+}
+
+.topbar-instagram-btn:hover {
+  background: linear-gradient(45deg, #f09433, #dc2743, #bc1888);
+  color: #ffffff;
+  border-color: transparent;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(225, 48, 108, 0.35);
+}
+
+.topbar-instagram-btn:hover i {
+  color: #ffffff;
+}
+
+.toolbar-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--border-color);
+  margin: 0 4px;
+}
+
+/* ==========================================================================
+   Right Workspace & PDF Preview
+   ========================================================================== */
+.preview-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #0b1120;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Toolbar */
+.toolbar {
+  height: 52px;
+  background: #131d31;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  user-select: none;
+  z-index: 10;
+}
+
+.document-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 8px var(--success);
+}
+
+.editable-tag {
+  font-size: 11px;
+  background: rgba(16, 185, 129, 0.15);
+  color: #6ee7b7;
+  padding: 2px 8px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.icon-btn:hover {
+  background: #334155;
+  color: #fff;
+}
+
+#zoom-level {
+  font-size: 12px;
+  font-weight: 600;
+  min-width: 44px;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+/* Viewport for paper */
+.paper-viewport {
+  flex: 1;
+  overflow: auto;
+  padding: 40px 20px 80px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background: radial-gradient(circle at center, #17233d 0%, #0b1120 100%);
+}
+
+.paper-viewport::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+.paper-viewport::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 5px;
+}
+
+/* ==========================================================================
+   A4 Page Simulation (Strict Fixed 210mm x 297mm Single Page)
+   ========================================================================== */
+.a4-page {
+  width: 210mm;
+  height: 297mm;
+  max-height: 297mm;
+  background: var(--paper-bg);
+  color: var(--paper-ink);
+  padding: 16mm 18mm 16mm 18mm;
+  box-shadow: var(--shadow-paper);
+  transform-origin: top center;
+  transition: transform 0.15s ease-out;
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================================================================
+   Slips Container & Multi-Repeat Layouts (Full Sized Boxes Always)
+   ========================================================================== */
+.slips-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.exam-slip {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  page-break-inside: avoid;
+}
+
+/* Cut Line with Scissors */
+.cut-line {
+  display: flex;
+  align-items: center;
+  margin: 18px 0;
+  color: #666;
+  font-size: 11px;
+  font-weight: 500;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.cut-line .cut-scissors {
+  padding-right: 8px;
+  font-size: 14px;
+}
+
+.cut-line .cut-dashed {
+  flex: 1;
+  border-bottom: 1.5px dashed #888;
+}
+
+.cut-line .cut-text {
+  padding: 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-size: 9px;
+  color: #666;
+}
+
+.slips-container.hide-cut-lines .cut-line {
+  display: none !important;
+}
+
+/* Layouts for 1, 2, 3, 4 Repeated Boxes - NEVER SHRUNK, ALWAYS FULL ORIGINAL SIZE */
+.slips-container.repeat-1 {
+  gap: 0;
+}
+
+.slips-container.repeat-2 {
+  gap: 16px;
+}
+
+.slips-container.repeat-2 .cut-line {
+  margin: 20px 0;
+}
+
+.slips-container.repeat-3 {
+  gap: 12px;
+}
+
+.slips-container.repeat-3 .cut-line {
+  margin: 14px 0;
+}
+
+.slips-container.repeat-4 {
+  gap: 10px;
+}
+
+.slips-container.repeat-4 .cut-line {
+  margin: 10px 0;
+}
+
+/* ==========================================================================
+   Original PDF Header Box Replica
+   ========================================================================== */
+.exam-header-box {
+  border: 1.8px solid #000000;
+  width: 100%;
+  min-height: 160px;
+  padding: 16px 20px 20px 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: #ffffff;
+}
+
+.institution-line {
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  letter-spacing: 0.3px;
+}
+
+.exam-title-text {
+  text-align: center;
+  font-size: 15.5px;
+  font-weight: 700;
+  color: #000000;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  line-height: 1.35;
+  margin-bottom: 5px;
+  cursor: text;
+}
+
+.subject-text {
+  text-align: center;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #000000;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  line-height: 1.35;
+  margin-bottom: 12px;
+  cursor: text;
+}
+
+.extra-meta-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 600;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed #bbb;
+  margin-bottom: 14px;
+}
+
+/* Student Info: REG NO. and ROLL NO */
+.student-info-section {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.info-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.info-label {
+  font-weight: 700;
+  color: #000000;
+  white-space: nowrap;
+  letter-spacing: 0.2px;
+}
+
+.info-value {
+  font-weight: 700;
+  color: #000000;
+  min-width: 140px;
+  display: inline-block;
+  cursor: text;
+  border-bottom: 1px dashed transparent;
+  transition: border-color 0.2s ease;
+}
+
+.info-value:empty:before {
+  content: attr(data-placeholder);
+  color: #a0aec0;
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* Page Body content (optional questions) */
+.exam-body-content {
+  margin-top: 24px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: #111;
+  min-height: 200px;
+}
+
+.exam-body-content:empty:before {
+  content: "Click here to add questions, instructions, or exam notes (optional)...";
+  color: #cbd5e1;
+  font-style: italic;
+}
+
+/* Inline Editable Highlight Effect */
+[contenteditable="true"]:hover {
+  outline: 1px dashed #3b82f6;
+  outline-offset: 2px;
+  border-radius: 2px;
+  background-color: rgba(59, 130, 246, 0.04);
+}
+
+[contenteditable="true"]:focus {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+  border-radius: 2px;
+  background-color: rgba(59, 130, 246, 0.08);
+}
+
+/* Toast notifications */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #1e293b;
+  color: #fff;
+  border: 1px solid #334155;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  z-index: 999;
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.toast.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.toast i {
+  color: var(--success);
+  font-size: 16px;
+}
+
+/* ==========================================================================
+   Print Stylesheet (@media print)
+   Produces 100% Vector Perfect A4 Page
+   ========================================================================== */
+@page {
+  size: A4 portrait;
+  margin: 10mm 12mm;
+}
+
+@media print {
+  html, body {
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    background: #ffffff !important;
+    overflow: hidden !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .no-print, .sidebar, .toolbar, .toast {
+    display: none !important;
+  }
+
+  .app-container {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .preview-area {
+    display: block !important;
+    background: #ffffff !important;
+    height: 100% !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+  }
+
+  .paper-viewport {
+    display: block !important;
+    background: transparent !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    height: 100% !important;
+  }
+
+  .a4-page {
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    box-shadow: none !important;
+    padding: 2mm 4mm !important;
+    margin: 0 !important;
+    transform: none !important;
+    overflow: hidden !important;
+    page-break-after: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .slips-container {
+    height: 100% !important;
+    max-height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  .exam-slip {
+    page-break-inside: avoid !important;
+    page-break-after: avoid !important;
+  }
+
+  .exam-header-box {
+    border: 2px solid #000000 !important;
+    background: #ffffff !important;
+    page-break-inside: avoid !important;
+  }
+
+  .info-value:empty:before,
+  .exam-body-content:empty:before {
+    display: none !important;
+  }
+
+  .cut-line {
+    color: #000 !important;
+    page-break-inside: avoid !important;
+  }
+  .cut-line .cut-dashed {
+    border-bottom: 1.5px dashed #000 !important;
+  }
+
+  [contenteditable="true"]:hover,
+  [contenteditable="true"]:focus {
+    outline: none !important;
+    background-color: transparent !important;
+  }
+}
+
+/* ==========================================================================
+   Responsive Adjustments
+   ========================================================================== */
+@media (max-width: 900px) {
+  body {
+    overflow-y: auto;
+  }
+
+  .app-container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .sidebar {
+    width: 100%;
+    min-width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .preview-area {
+    height: auto;
+    min-height: 800px;
+  }
+
+  .paper-viewport {
+    padding: 20px 10px;
+  }
+}
