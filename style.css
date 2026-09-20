@@ -653,21 +653,26 @@ body {
   width: 794px;
   height: 1123px;
   max-height: 1123px;
-  background: var(--paper-bg);
-  color: var(--paper-ink);
+  background: #ffffff;
+  color: #000000;
   padding: 60px 68px;
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.55), 0 5px 15px rgba(0, 0, 0, 0.3);
   border: 1px solid #e2e8f0;
   border-radius: 2px;
   transform-origin: top left;
   transition: transform 0.15s ease-out;
-  position: absolute;
+  position: relative;
   top: 0;
   left: 0;
   box-sizing: border-box;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+}
+
+.export-pdf-mode .info-value:empty:before,
+.export-pdf-mode .exam-body-content:empty:before {
+  display: none !important;
 }
 
 /* ==========================================================================
@@ -942,113 +947,6 @@ body {
   font-size: 16px;
 }
 
-/* ==========================================================================
-   Print Stylesheet (@media print)
-   Produces 100% Vector Perfect A4 Page
-   ========================================================================== */
-@page {
-  size: A4 portrait;
-  margin: 10mm 12mm;
-}
-
-@media print {
-  html, body {
-    width: 100% !important;
-    height: 100% !important;
-    max-height: 100% !important;
-    background: #ffffff !important;
-    overflow: hidden !important;
-    color: #000000 !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  .no-print, .sidebar, .toolbar, .toast {
-    display: none !important;
-  }
-
-  .app-container {
-    display: block !important;
-    width: 100% !important;
-    height: 100% !important;
-  }
-
-  .preview-area {
-    display: block !important;
-    background: #ffffff !important;
-    height: 100% !important;
-    overflow: hidden !important;
-    padding: 0 !important;
-  }
-
-  .paper-viewport {
-    display: block !important;
-    background: transparent !important;
-    padding: 0 !important;
-    overflow: hidden !important;
-    height: 100% !important;
-  }
-
-  .paper-wrapper {
-    width: 100% !important;
-    height: 100% !important;
-    position: static !important;
-    margin: 0 !important;
-    display: block !important;
-  }
-
-  .a4-page {
-    width: 100% !important;
-    height: 100% !important;
-    max-height: 100% !important;
-    position: static !important;
-    box-shadow: none !important;
-    border: none !important;
-    padding: 2mm 4mm !important;
-    margin: 0 !important;
-    transform: none !important;
-    overflow: hidden !important;
-    page-break-after: avoid !important;
-    page-break-inside: avoid !important;
-  }
-
-  .slips-container {
-    height: 100% !important;
-    max-height: 100% !important;
-    overflow: hidden !important;
-  }
-
-  .exam-slip {
-    page-break-inside: avoid !important;
-    page-break-after: avoid !important;
-  }
-
-  .exam-header-box {
-    border: 2px solid #000000 !important;
-    background: #ffffff !important;
-    page-break-inside: avoid !important;
-  }
-
-  .info-value:empty:before,
-  .exam-body-content:empty:before {
-    display: none !important;
-  }
-
-  .cut-line {
-    color: #000 !important;
-    page-break-inside: avoid !important;
-  }
-  .cut-line .cut-dashed {
-    border-bottom: 1.5px dashed #000 !important;
-  }
-
-  [contenteditable="true"]:hover,
-  [contenteditable="true"]:focus {
-    outline: none !important;
-    background-color: transparent !important;
-  }
-}
-
 /* Mobile Nav Tabs & Sticky Bar Defaults (Hidden on Desktop) */
 .mobile-nav-tabs,
 .mobile-sticky-bar {
@@ -1058,7 +956,7 @@ body {
 /* ==========================================================================
    Mobile Screen Optimizations (Screens <= 850px)
    ========================================================================== */
-@media (max-width: 850px) {
+@media screen and (max-width: 850px) {
   body {
     height: 100vh;
     height: 100dvh;
@@ -1250,3 +1148,131 @@ body {
     padding: 10px 12px;
   }
 }
+
+/* ==========================================================================
+   Print Stylesheet (@media print)
+   Strictly displays ONLY the A4 Paper Sheet in 100% Vector Quality
+   ========================================================================== */
+@page {
+  size: A4 portrait;
+  margin: 10mm 12mm;
+}
+
+@media print {
+  html, body {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100% !important;
+    background: #ffffff !important;
+    overflow: visible !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .no-print,
+  .sidebar,
+  #app-sidebar,
+  .mobile-nav-tabs,
+  .mobile-sticky-bar,
+  .toolbar,
+  .toast,
+  .instagram-card {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  .app-container {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    position: static !important;
+  }
+
+  .preview-area,
+  #preview-main-area {
+    display: block !important;
+    visibility: visible !important;
+    background: #ffffff !important;
+    width: 100% !important;
+    height: auto !important;
+    position: static !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .paper-viewport,
+  #viewport {
+    display: block !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    height: auto !important;
+    width: 100% !important;
+  }
+
+  .paper-wrapper,
+  #paper-wrapper {
+    width: 100% !important;
+    height: auto !important;
+    position: static !important;
+    margin: 0 auto !important;
+    display: block !important;
+  }
+
+  .a4-page,
+  #printable-document {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 270mm !important;
+    position: static !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    transform: none !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+    page-break-after: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .slips-container {
+    height: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .exam-slip {
+    page-break-inside: avoid !important;
+    page-break-after: avoid !important;
+  }
+
+  .exam-header-box {
+    border: 1.8px solid #000000 !important;
+    background: #ffffff !important;
+    page-break-inside: avoid !important;
+  }
+
+  .info-value:empty:before,
+  .exam-body-content:empty:before {
+    display: none !important;
+  }
+
+  .cut-line {
+    color: #000 !important;
+    page-break-inside: avoid !important;
+  }
+  .cut-line .cut-dashed {
+    border-bottom: 1.5px dashed #000 !important;
+  }
+
+  [contenteditable="true"]:hover,
+  [contenteditable="true"]:focus {
+    outline: none !important;
+    background-color: transparent !important;
+  }
+}
+

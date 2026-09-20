@@ -32,6 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Buttons & Extras
   const btnDownload = document.getElementById('btn-download');
   const btnPrint = document.getElementById('btn-print');
+  const mBtnDownload = document.getElementById('m-btn-download');
+  const mBtnPrint = document.getElementById('m-btn-print');
   const btnSampleData = document.getElementById('btn-sample-data');
   const btnReset = document.getElementById('btn-reset');
   const toggleExtraFields = document.getElementById('toggle-extra-fields');
@@ -311,27 +313,22 @@ document.addEventListener('DOMContentLoaded', () => {
     window.print();
   });
 
-  // Direct PDF Download using html2pdf.js
-  btnDownload.addEventListener('click', () => {
+  // Direct PDF Download using html2pdf.js with offscreen clone
+  let isGenerating = false;
+  btnDownload.addEventListener('click', async () => {
+    if (isGenerating) return;
+    isGenerating = true;
+
+    // Visual button loading state
+    const originalBtnHTML = btnDownload.innerHTML;
+    btnDownload.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating...';
+    btnDownload.disabled = true;
+    if (mBtnDownload) {
+      mBtnDownload.disabled = true;
+      mBtnDownload.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating...';
+    }
+
     showToast("Generating PDF, please wait...");
-    
-    const originalTransform = printableDoc.style.transform;
-    const originalWrapperW = paperWrapper ? paperWrapper.style.width : '';
-    const originalWrapperH = paperWrapper ? paperWrapper.style.height : '';
-
-    printableDoc.style.transform = 'none';
-    if (paperWrapper) {
-      paperWrapper.style.width = `${BASE_A4_WIDTH}px`;
-      paperWrapper.style.height = `${BASE_A4_HEIGHT}px`;
-    }
-
-    function restoreLayout() {
-      printableDoc.style.transform = originalTransform;
-      if (paperWrapper) {
-        paperWrapper.style.width = originalWrapperW;
-        paperWrapper.style.height = originalWrapperH;
-      }
-    }
 
     const rollNoText = inputRollNo.value.trim();
     const regNoText = inputRegNo.value.trim();
@@ -342,25 +339,73 @@ document.addEventListener('DOMContentLoaded', () => {
       filename = `Exam_Paper_${currentRepeatCount}x_Reg_${regNoText}.pdf`;
     }
 
+    // Create an isolated offscreen clone of printableDoc.
+    // This solves:
+    // 1. Mobile screen where preview-main-area is display:none
+    // 2. CSS transform / zoom level distortions
+    // 3. Absolute positioning height collapse to 0
+    // 4. Multi-page overflow caused by fractional millimeter rounding
+    const clone = printableDoc.cloneNode(true);
+    clone.classList.add('export-pdf-mode');
+    clone.style.position = 'relative';
+    clone.style.top = '0';
+    clone.style.left = '0';
+    clone.style.transform = 'none';
+    clone.style.transition = 'none';
+    clone.style.boxShadow = 'none';
+    clone.style.border = 'none';
+    clone.style.width = '793px';
+    clone.style.height = '1120px';
+    clone.style.maxHeight = '1120px';
+    clone.style.margin = '0';
+    clone.style.boxSizing = 'border-box';
+
+    const exportWrapper = document.createElement('div');
+    exportWrapper.id = 'pdf-export-temp-wrapper';
+    exportWrapper.style.cssText = 'position: fixed; top: -9999px; left: -9999px; width: 793px; height: 1120px; z-index: -9999; background: #ffffff; overflow: hidden; pointer-events: none;';
+    exportWrapper.appendChild(clone);
+    document.body.appendChild(exportWrapper);
+
+    function cleanup() {
+      if (exportWrapper && exportWrapper.parentNode) {
+        exportWrapper.parentNode.removeChild(exportWrapper);
+      }
+      btnDownload.innerHTML = originalBtnHTML;
+      btnDownload.disabled = false;
+      if (mBtnDownload) {
+        mBtnDownload.disabled = false;
+        mBtnDownload.innerHTML = '<i class="fa-solid fa-file-arrow-down"></i> Download PDF';
+      }
+      isGenerating = false;
+    }
+
     const opt = {
       margin:       0,
       filename:     filename,
       image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  { scale: 2, useCORS: true, letterRendering: true, logging: false },
-      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      html2canvas:  {
+        scale: 2,
+        useCORS: true,
+        letterRendering: true,
+        logging: false
+      },
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      pagebreak:    { mode: 'avoid-all' }
     };
 
-    if (typeof html2pdf !== 'undefined') {
-      html2pdf().set(opt).from(printableDoc).save().then(() => {
-        restoreLayout();
+    try {
+      if (typeof html2pdf !== 'undefined') {
+        await html2pdf().set(opt).from(clone).save();
+        cleanup();
         showToast("PDF downloaded successfully!");
-      }).catch(err => {
-        console.error("html2pdf error:", err);
-        restoreLayout();
+      } else {
+        cleanup();
         window.print();
-      });
-    } else {
-      restoreLayout();
+      }
+    } catch (err) {
+      console.error("html2pdf generation error:", err);
+      cleanup();
+      showToast("Direct download failed, opening print dialog...");
       window.print();
     }
   });
@@ -415,8 +460,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Mobile Sticky Bottom Action Buttons
-  const mBtnDownload = document.getElementById('m-btn-download');
-  const mBtnPrint = document.getElementById('m-btn-print');
   if (mBtnDownload) {
     mBtnDownload.addEventListener('click', () => btnDownload.click());
   }
