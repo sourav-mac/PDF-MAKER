@@ -17,8 +17,21 @@
 </head>
 <body>
   <div class="app-container">
+    <!-- Mobile Top Navigation Tabs -->
+    <nav class="mobile-nav-tabs no-print" id="mobile-nav-tabs">
+      <button type="button" class="mobile-tab-btn active" data-tab="editor">
+        <i class="fa-solid fa-pen-to-square"></i>
+        <span>Form Editor</span>
+      </button>
+      <button type="button" class="mobile-tab-btn" data-tab="preview">
+        <i class="fa-solid fa-file-lines"></i>
+        <span>Live Preview</span>
+        <span class="preview-dot"></span>
+      </button>
+    </nav>
+
     <!-- Sidebar / Editor Panel -->
-    <aside class="sidebar no-print">
+    <aside class="sidebar no-print" id="app-sidebar">
       <div class="sidebar-header">
         <div class="logo-icon"><i class="fa-solid fa-file-lines"></i></div>
         <div>
@@ -209,7 +222,7 @@
     </aside>
 
     <!-- Main Workspace / Preview Area -->
-    <main class="preview-area">
+    <main class="preview-area" id="preview-main-area">
       <!-- Top Navigation / Zoom Bar -->
       <div class="toolbar no-print">
         <div class="document-meta">
@@ -299,6 +312,16 @@
         </div>
       </div>
     </main>
+
+    <!-- Mobile Quick Sticky Actions -->
+    <div class="mobile-sticky-bar no-print">
+      <button type="button" id="m-btn-download" class="mobile-act-btn btn-m-primary">
+        <i class="fa-solid fa-file-arrow-down"></i> Download PDF
+      </button>
+      <button type="button" id="m-btn-print" class="mobile-act-btn btn-m-secondary">
+        <i class="fa-solid fa-print"></i> Print
+      </button>
+    </div>
   </div>
 
   <script src="app.js"></script>

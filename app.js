@@ -349,27 +349,58 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Zoom Controls
   function applyZoom(zoom) {
-    currentZoom = Math.min(Math.max(zoom, 0.45), 1.6);
+    currentZoom = Math.min(Math.max(zoom, 0.35), 1.6);
     printableDoc.style.transform = `scale(${currentZoom})`;
     zoomLevelDisplay.innerText = `${Math.round(currentZoom * 100)}%`;
   }
 
   zoomInBtn.addEventListener('click', () => applyZoom(currentZoom + 0.1));
   zoomOutBtn.addEventListener('click', () => applyZoom(currentZoom - 0.1));
-  zoomResetBtn.addEventListener('click', () => applyZoom(1));
+  zoomResetBtn.addEventListener('click', () => autoFit());
 
   function autoFit() {
     const viewportWidth = window.innerWidth;
-    if (viewportWidth < 1200 && viewportWidth > 900) {
+    if (viewportWidth <= 850) {
+      // Mobile screen: scale 210mm (~794px) to fit available width perfectly
+      const availableWidth = viewportWidth - 24;
+      const targetScale = Math.min(Math.max(availableWidth / 794, 0.38), 0.95);
+      applyZoom(targetScale);
+    } else if (viewportWidth < 1200) {
       applyZoom(0.8);
-    } else if (viewportWidth <= 900) {
-      applyZoom(0.65);
     } else {
       applyZoom(1);
     }
   }
   autoFit();
   window.addEventListener('resize', autoFit);
+
+  // Mobile Top Navigation Tabs
+  const appContainer = document.querySelector('.app-container');
+  const mobileTabBtns = document.querySelectorAll('.mobile-tab-btn');
+  mobileTabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      mobileTabBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const targetTab = btn.getAttribute('data-tab');
+      if (targetTab === 'preview') {
+        appContainer.classList.add('show-preview');
+        setTimeout(() => autoFit(), 60);
+      } else {
+        appContainer.classList.remove('show-preview');
+      }
+    });
+  });
+
+  // Mobile Sticky Bottom Action Buttons
+  const mBtnDownload = document.getElementById('m-btn-download');
+  const mBtnPrint = document.getElementById('m-btn-print');
+  if (mBtnDownload) {
+    mBtnDownload.addEventListener('click', () => btnDownload.click());
+  }
+  if (mBtnPrint) {
+    mBtnPrint.addEventListener('click', () => btnPrint.click());
+  }
 
   // Toast Helper
   function showToast(message) {
