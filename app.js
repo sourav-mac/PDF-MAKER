@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
               >${inputRegNo.value}</span>
             </div>
             <div class="info-row">
-              <span class="info-label">ROLL NO –</span>
+              <span class="info-label">ROLL NO. –</span>
               <span 
                 class="info-value preview-roll-no" 
                 contenteditable="true" 
@@ -359,6 +359,21 @@ document.addEventListener('DOMContentLoaded', () => {
     clone.style.maxHeight = '1120px';
     clone.style.margin = '0';
     clone.style.boxSizing = 'border-box';
+
+    // Strip contenteditable and remove any borders/underlines on fields in the export clone
+    clone.querySelectorAll('[contenteditable]').forEach(el => {
+      el.removeAttribute('contenteditable');
+      el.style.border = 'none';
+      el.style.borderBottom = 'none';
+      el.style.outline = 'none';
+      el.style.textDecoration = 'none';
+    });
+    clone.querySelectorAll('.info-value, .info-label, .info-row, .student-info-section').forEach(el => {
+      el.style.border = 'none';
+      el.style.borderBottom = 'none';
+      el.style.outline = 'none';
+      el.style.textDecoration = 'none';
+    });
 
     const exportWrapper = document.createElement('div');
     exportWrapper.id = 'pdf-export-temp-wrapper';

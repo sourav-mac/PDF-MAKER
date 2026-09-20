@@ -675,6 +675,17 @@ body {
   display: none !important;
 }
 
+.export-pdf-mode .student-info-section,
+.export-pdf-mode .info-row,
+.export-pdf-mode .info-label,
+.export-pdf-mode .info-value {
+  border: none !important;
+  border-bottom: none !important;
+  outline: none !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+}
+
 /* ==========================================================================
    Slips Container & Multi-Repeat Layouts (Full Sized Boxes Always)
 /* Equal Division across the full A4 Page */
@@ -874,8 +885,10 @@ body {
   min-width: 140px;
   display: inline-block;
   cursor: text;
-  border-bottom: 1px dashed transparent;
-  transition: border-color 0.2s ease;
+  border: none;
+  border-bottom: none;
+  text-decoration: none;
+  outline: none;
 }
 
 .info-value:empty:before {
@@ -1259,6 +1272,17 @@ body {
   .info-value:empty:before,
   .exam-body-content:empty:before {
     display: none !important;
+  }
+
+  .student-info-section,
+  .info-row,
+  .info-label,
+  .info-value {
+    border: none !important;
+    border-bottom: none !important;
+    text-decoration: none !important;
+    outline: none !important;
+    box-shadow: none !important;
   }
 
   .cut-line {
