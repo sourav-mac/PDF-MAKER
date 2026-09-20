@@ -573,14 +573,6 @@ body {
   font-weight: 500;
 }
 
-.status-indicator {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--success);
-  box-shadow: 0 0 8px var(--success);
-}
-
 .editable-tag {
   font-size: 11px;
   background: rgba(16, 185, 129, 0.15);
@@ -1085,14 +1077,6 @@ body {
     color: #60a5fa;
     background: rgba(59, 130, 246, 0.08);
     border-bottom-color: #3b82f6;
-  }
-
-  .preview-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #10b981;
-    display: inline-block;
   }
 
   /* Screen Toggle between Form & Preview */
