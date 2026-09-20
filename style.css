@@ -768,9 +768,19 @@ body {
   min-height: 125px;
   padding: 10px 16px 12px 16px;
 }
+.slips-container.repeat-4 .exam-title-text {
+  font-size: 16px;
+}
+.slips-container.repeat-4 .subject-text {
+  font-size: 14.5px;
+  margin-bottom: 8px;
+}
 .slips-container.repeat-4 .student-info-section {
   margin-top: 8px;
   gap: 8px;
+}
+.slips-container.repeat-4 .info-row {
+  font-size: 12.5px;
 }
 
 /* ==========================================================================
@@ -799,25 +809,25 @@ body {
 
 .exam-title-text {
   text-align: center;
-  font-size: 15.5px;
-  font-weight: 700;
+  font-size: 18.5px;
+  font-weight: 800;
   color: #000000;
-  letter-spacing: 0.4px;
+  letter-spacing: 0.5px;
   text-transform: uppercase;
   line-height: 1.35;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
   cursor: text;
 }
 
 .subject-text {
   text-align: center;
-  font-size: 14.5px;
+  font-size: 16.5px;
   font-weight: 700;
   color: #000000;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.35px;
   text-transform: uppercase;
   line-height: 1.35;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   cursor: text;
 }
 
@@ -843,7 +853,7 @@ body {
   display: flex;
   align-items: baseline;
   gap: 8px;
-  font-size: 14px;
+  font-size: 13.5px;
 }
 
 .info-label {
