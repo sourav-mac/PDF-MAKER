@@ -18,6 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Slips Container & Printable Sheet
   const slipsContainer = document.getElementById('slips-container');
   const printableDoc = document.getElementById('printable-document');
+  const paperWrapper = document.getElementById('paper-wrapper');
+  const BASE_A4_WIDTH = 794;
+  const BASE_A4_HEIGHT = 1123;
 
   // Repetition Controls
   const repeatSelector = document.getElementById('repeat-selector');
@@ -313,7 +316,22 @@ document.addEventListener('DOMContentLoaded', () => {
     showToast("Generating PDF, please wait...");
     
     const originalTransform = printableDoc.style.transform;
+    const originalWrapperW = paperWrapper ? paperWrapper.style.width : '';
+    const originalWrapperH = paperWrapper ? paperWrapper.style.height : '';
+
     printableDoc.style.transform = 'none';
+    if (paperWrapper) {
+      paperWrapper.style.width = `${BASE_A4_WIDTH}px`;
+      paperWrapper.style.height = `${BASE_A4_HEIGHT}px`;
+    }
+
+    function restoreLayout() {
+      printableDoc.style.transform = originalTransform;
+      if (paperWrapper) {
+        paperWrapper.style.width = originalWrapperW;
+        paperWrapper.style.height = originalWrapperH;
+      }
+    }
 
     const rollNoText = inputRollNo.value.trim();
     const regNoText = inputRegNo.value.trim();
@@ -334,23 +352,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (typeof html2pdf !== 'undefined') {
       html2pdf().set(opt).from(printableDoc).save().then(() => {
-        printableDoc.style.transform = originalTransform;
+        restoreLayout();
         showToast("PDF downloaded successfully!");
       }).catch(err => {
         console.error("html2pdf error:", err);
-        printableDoc.style.transform = originalTransform;
+        restoreLayout();
         window.print();
       });
     } else {
-      printableDoc.style.transform = originalTransform;
+      restoreLayout();
       window.print();
     }
   });
 
   // Zoom Controls
   function applyZoom(zoom) {
-    currentZoom = Math.min(Math.max(zoom, 0.35), 1.6);
+    currentZoom = Math.min(Math.max(zoom, 0.25), 1.8);
     printableDoc.style.transform = `scale(${currentZoom})`;
+    if (paperWrapper) {
+      paperWrapper.style.width = `${Math.round(BASE_A4_WIDTH * currentZoom)}px`;
+      paperWrapper.style.height = `${Math.round(BASE_A4_HEIGHT * currentZoom)}px`;
+    }
     zoomLevelDisplay.innerText = `${Math.round(currentZoom * 100)}%`;
   }
 
@@ -361,9 +383,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function autoFit() {
     const viewportWidth = window.innerWidth;
     if (viewportWidth <= 850) {
-      // Mobile screen: scale 210mm (~794px) to fit available width perfectly
+      // Mobile screen: scale 794px A4 width to fit available width perfectly with 24px margins
       const availableWidth = viewportWidth - 24;
-      const targetScale = Math.min(Math.max(availableWidth / 794, 0.38), 0.95);
+      const targetScale = Math.min(Math.max(availableWidth / BASE_A4_WIDTH, 0.28), 0.95);
       applyZoom(targetScale);
     } else if (viewportWidth < 1200) {
       applyZoom(0.8);

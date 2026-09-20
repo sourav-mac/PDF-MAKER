@@ -251,8 +251,10 @@
 
       <!-- Scrollable Preview Container -->
       <div class="paper-viewport" id="viewport">
-        <!-- Physical A4 Page Container -->
-        <div class="a4-page" id="printable-document">
+        <!-- Exact Scaled Wrapper for Perfect Centering & Auto-Fit -->
+        <div class="paper-wrapper" id="paper-wrapper">
+          <!-- Physical A4 Page Container -->
+          <div class="a4-page" id="printable-document">
           <div id="slips-container" class="slips-container repeat-1">
             <!-- Slip 1 (Master / Default) -->
             <div class="exam-slip" data-slip-index="1">
@@ -309,6 +311,7 @@
               </div>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </main>
