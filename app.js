@@ -321,7 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
       mBtnDownload.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating...';
     }
 
-    showToast("Generating crisp vector PDF via Chromium...");
+    showToast("Preparing your PDF, just a moment please...");
 
     const rollNoText = inputRollNo.value.trim();
     const regNoText = inputRegNo.value.trim();
@@ -418,7 +418,7 @@ document.addEventListener('DOMContentLoaded', () => {
       a.remove();
 
       resetButton();
-      showToast("PDF downloaded successfully!");
+      showToast("🎉 Your PDF is ready and downloaded! ✨", "fa-circle-check");
     } catch (err) {
       console.error("Puppeteer PDF generation error:", err);
       resetButton();
@@ -481,13 +481,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Toast Helper
-  function showToast(message) {
+  function showToast(message, iconClass = 'fa-circle-check') {
     let existingToast = document.querySelector('.toast');
     if (existingToast) existingToast.remove();
 
     const toast = document.createElement('div');
     toast.className = 'toast';
-    toast.innerHTML = `<i class="fa-solid fa-circle-check"></i> <span>${message}</span>`;
+    toast.innerHTML = `<i class="fa-solid ${iconClass}"></i> <span>${message}</span>`;
     document.body.appendChild(toast);
 
     setTimeout(() => toast.classList.add('show'), 50);
