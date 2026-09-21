@@ -134,35 +134,17 @@ input, button, textarea, select {
 }
 
 .sidebar-header .logo-icon {
-  width: 46px;
-  height: 46px;
+  width: 44px;
+  height: 44px;
   background: var(--accent-gradient);
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
+  font-size: 20px;
   color: #fff;
-  box-shadow: 0 4px 18px var(--primary-glow);
-  position: relative;
-  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.15);
   flex-shrink: 0;
-}
-
-.sidebar-header .logo-icon::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-  animation: logoShine 4s infinite;
-}
-
-@keyframes logoShine {
-  0%, 70% { left: -100%; }
-  100% { left: 100%; }
 }
 
 .sidebar-header h2 {
@@ -411,7 +393,7 @@ input, button, textarea, select {
 .btn-repeat.active {
   background: var(--accent-gradient);
   color: #ffffff;
-  box-shadow: 0 3px 10px var(--primary-glow);
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .repeat-options {
@@ -556,12 +538,11 @@ input, button, textarea, select {
   background: #3b82f6;
   border: 2px solid #ffffff;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-  transition: transform 0.15s ease, background-color 0.15s ease;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.15s ease;
 }
 
 .range-slider::-webkit-slider-thumb:hover {
-  transform: scale(1.2);
   background: #60a5fa;
 }
 
@@ -587,8 +568,8 @@ input, button, textarea, select {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 13px 20px;
+  gap: 8px;
+  padding: 12px 20px;
   border-radius: var(--radius-md);
   font-size: 14px;
   font-weight: 700;
@@ -598,68 +579,30 @@ input, button, textarea, select {
   border: none;
   text-decoration: none;
   position: relative;
-  overflow: hidden;
 }
 
-/* Executive Grade Primary Download Button */
+/* Executive Grade Primary Download Button - Clean & Solid */
 .btn-primary {
   background: var(--accent-gradient);
   color: #ffffff;
-  box-shadow: var(--shadow-button);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .btn-primary .btn-icon {
   font-size: 15px;
-  transition: transform 0.2s ease;
-}
-
-.btn-primary .btn-badge {
-  font-size: 10.5px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 2px 7px;
-  border-radius: var(--radius-full);
-  margin-left: 4px;
-}
-
-.btn-primary::after {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, transparent 60%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
 }
 
 .btn-primary:hover {
   background: var(--accent-gradient-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 28px -2px rgba(37, 99, 235, 0.55);
-}
-
-.btn-primary:hover .btn-icon {
-  transform: translateY(-1px);
-}
-
-.btn-primary:hover::after {
-  opacity: 1;
 }
 
 .btn-primary:active {
-  transform: translateY(0);
-  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+  opacity: 0.92;
 }
 
 .btn-primary:disabled {
-  opacity: 0.65;
+  opacity: 0.6;
   cursor: not-allowed;
-  transform: none;
 }
 
 /* Secondary Actions */
@@ -744,8 +687,8 @@ input, button, textarea, select {
    Instagram Creator Connect Card
    ========================================================================== */
 .instagram-card {
-  background: linear-gradient(135deg, rgba(225, 48, 108, 0.08) 0%, rgba(131, 58, 180, 0.08) 100%);
-  border: 1px solid rgba(225, 48, 108, 0.22);
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   padding: 11px 14px;
   display: flex;
@@ -756,8 +699,7 @@ input, button, textarea, select {
 }
 
 .instagram-card:hover {
-  border-color: rgba(225, 48, 108, 0.4);
-  box-shadow: 0 4px 18px rgba(225, 48, 108, 0.12);
+  border-color: var(--border-medium);
 }
 
 .instagram-card-left {
@@ -767,16 +709,15 @@ input, button, textarea, select {
 }
 
 .instagram-icon-circle {
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #ffffff;
-  font-size: 16px;
-  box-shadow: 0 3px 10px rgba(220, 39, 67, 0.3);
+  font-size: 15px;
   flex-shrink: 0;
 }
 
@@ -801,22 +742,20 @@ input, button, textarea, select {
 .instagram-follow-btn {
   background: linear-gradient(45deg, #f09433 0%, #dc2743 50%, #bc1888 100%);
   color: #ffffff;
-  padding: 6px 14px;
+  padding: 6px 13px;
   border-radius: var(--radius-full);
   font-size: 11.5px;
   font-weight: 700;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  box-shadow: 0 3px 10px rgba(220, 39, 67, 0.25);
+  gap: 5px;
   transition: var(--transition-fast);
   white-space: nowrap;
 }
 
 .instagram-follow-btn:hover {
-  transform: translateY(-1px) scale(1.02);
-  box-shadow: 0 5px 16px rgba(220, 39, 67, 0.45);
+  opacity: 0.92;
   color: #ffffff;
 }
 
@@ -903,8 +842,6 @@ input, button, textarea, select {
   background: linear-gradient(45deg, #f09433, #dc2743, #bc1888);
   color: #ffffff;
   border-color: transparent;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(225, 48, 108, 0.35);
 }
 
 .topbar-instagram-btn:hover i {
@@ -1453,7 +1390,7 @@ input, button, textarea, select {
     width: 100%;
     background: var(--accent-gradient);
     color: #ffffff;
-    box-shadow: 0 4px 14px var(--primary-glow);
+    border: 1px solid rgba(255, 255, 255, 0.15);
   }
 }
 
