@@ -292,21 +292,22 @@ async function launchBrowser() {
     const puppeteerCoreModule = await import('puppeteer-core');
     const puppeteer = puppeteerCoreModule.default || puppeteerCoreModule;
 
-    // Pre-load font for AWS Lambda environment so glyphs never render as black missing blocks
-    try {
-      await chromium.font('https://raw.githack.com/googlefonts/montserrat/main/fonts/ttf/Montserrat-Regular.ttf');
-      await chromium.font('https://raw.githack.com/googlefonts/montserrat/main/fonts/ttf/Montserrat-Bold.ttf');
-    } catch (fontErr) {
-      console.warn('Chromium font pre-load warning:', fontErr.message);
-    }
-
     const executablePath = await chromium.executablePath();
 
     return await puppeteer.launch({
-      args: chromium.args,
-      defaultViewport: chromium.defaultViewport || { width: 794, height: 1123 },
+      args: [
+        ...chromium.args,
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+        '--single-process',
+        '--no-zygote'
+      ],
+      defaultViewport: chromium.defaultViewport || { width: 794, height: 1123, deviceScaleFactor: 2 },
       executablePath: executablePath,
       headless: chromium.headless,
+      ignoreHTTPSErrors: true
     });
   } else {
     // Local / standard server environment
@@ -328,7 +329,7 @@ async function launchBrowser() {
         'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
         'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe',
         'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
-        'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+        'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
         '/usr/bin/google-chrome',
         '/usr/bin/chromium',
         '/usr/bin/chromium-browser'
@@ -411,8 +412,8 @@ module.exports = async function handler(req, res) {
     });
 
     await page.setContent(fullHtmlDocument, {
-      waitUntil: 'load',
-      timeout: 15000
+      waitUntil: 'domcontentloaded',
+      timeout: 12000
     });
 
     // Emulate screen media to guarantee exact CSS colors & styles
@@ -426,22 +427,24 @@ module.exports = async function handler(req, res) {
 
     try {
       await page.evaluateHandle('document.fonts.ready');
-    } catch (fontErr) {
-      console.warn('Fonts ready check bypassed:', fontErr.message);
-    }
+    } catch (fontErr) {}
 
-    const pdfBuffer = await page.pdf({
+    const pdfUint8 = await page.pdf({
       format: 'A4',
       printBackground: true,
       margin: { top: '0mm', right: '0mm', bottom: '0mm', left: '0mm' },
       preferCSSPageSize: true
     });
 
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `attachment; filename="${encodeURIComponent(pdfFilename)}"`);
-    res.setHeader('Content-Length', pdfBuffer.length);
+    const pdfBuffer = Buffer.from(pdfUint8);
 
-    return res.status(200).send(pdfBuffer);
+    res.writeHead(200, {
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': `attachment; filename="${encodeURIComponent(pdfFilename)}"`,
+      'Content-Length': pdfBuffer.length
+    });
+
+    return res.end(pdfBuffer);
   } catch (err) {
     console.error('PDF Generation Error:', err);
     return res.status(500).json({

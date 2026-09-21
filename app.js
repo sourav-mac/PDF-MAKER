@@ -393,7 +393,19 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       const blob = await response.blob();
-      console.log('Blob received successfully, size:', blob.size);
+      console.log('Blob received successfully, size:', blob.size, 'type:', blob.type);
+
+      if (blob.size < 1000) {
+        const text = await blob.text();
+        console.error('Unexpected small response from server:', text);
+        let errMsg = 'Downloaded file was empty or corrupted.';
+        try {
+          const errData = JSON.parse(text);
+          errMsg = errData.details ? `${errData.error}: ${errData.details}` : (errData.error || text);
+        } catch (_) {}
+        throw new Error(errMsg);
+      }
+
       window.lastDownloadedBlob = blob;
       const downloadUrl = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
