@@ -21,8 +21,10 @@
   },
   "homepage": "https://github.com/sourav-mac/PDF-MAKER#readme",
   "dependencies": {
+    "@sparticuz/chromium": "^153.0.0",
     "cors": "^2.8.6",
     "express": "^5.2.1",
-    "puppeteer": "^25.11.0"
+    "puppeteer": "^25.11.0",
+    "puppeteer-core": "^25.11.0"
   }
 }
