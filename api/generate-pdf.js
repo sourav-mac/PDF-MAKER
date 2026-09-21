@@ -1,9 +1,9 @@
 const path = require('path');
 const fs = require('fs');
 
-// Helper to launch browser across Vercel Serverless and Local environments
+// Helper to launch browser across Vercel Serverless, Docker, and Local environments
 async function launchBrowser() {
-  const isVercel = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_VERSION);
+  const isVercel = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_VERSION || process.env.AWS_REGION);
 
   if (isVercel) {
     const chromium = require('@sparticuz/chromium');
@@ -12,13 +12,22 @@ async function launchBrowser() {
     const executablePath = await chromium.executablePath();
 
     return await puppeteer.launch({
-      args: [...chromium.args, '--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
+      args: [
+        ...chromium.args,
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+        '--single-process',
+        '--no-zygote'
+      ],
       defaultViewport: { width: 794, height: 1123, deviceScaleFactor: 2 },
       executablePath: executablePath,
-      headless: chromium.headless,
+      headless: chromium.headless !== undefined ? chromium.headless : true,
+      ignoreHTTPSErrors: true
     });
   } else {
-    // Local environment
+    // Local / standard server environment
     try {
       const puppeteer = require('puppeteer');
       return await puppeteer.launch({
@@ -37,14 +46,17 @@ async function launchBrowser() {
         'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
         'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe',
         'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
-        'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
+        'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+        '/usr/bin/google-chrome',
+        '/usr/bin/chromium',
+        '/usr/bin/chromium-browser'
       ];
       const foundPath = possiblePaths.find(p => fs.existsSync(p));
       if (foundPath) {
         return await puppeteerCore.launch({
           executablePath: foundPath,
           headless: 'new',
-          args: ['--no-sandbox', '--disable-setuid-sandbox']
+          args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu']
         });
       }
       throw err;
@@ -79,7 +91,7 @@ module.exports = async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed. Use POST.' });
   }
 
-  // Parse body if not already parsed (Vercel parses JSON bodies automatically)
+  // Parse body safely
   let body = req.body;
   if (typeof body === 'string') {
     try {
@@ -165,15 +177,18 @@ module.exports = async function handler(req, res) {
       deviceScaleFactor: 2
     });
 
+    // Use 'load' with fallback so network slow CDNs don't block PDF generation
     await page.setContent(fullHtmlDocument, {
-      waitUntil: ['load', 'networkidle0'],
-      timeout: 20000
+      waitUntil: 'load',
+      timeout: 15000
     });
 
-    // Await font loading for crisp typography
+    // Gracefully await fonts if ready
     try {
       await page.evaluateHandle('document.fonts.ready');
-    } catch (e) {}
+    } catch (fontErr) {
+      console.warn('Fonts ready check bypassed:', fontErr.message);
+    }
 
     const pdfBuffer = await page.pdf({
       format: 'A4',
@@ -188,7 +203,7 @@ module.exports = async function handler(req, res) {
 
     return res.status(200).send(pdfBuffer);
   } catch (err) {
-    console.error('Vercel PDF Generation Error:', err);
+    console.error('PDF Generation Error:', err);
     return res.status(500).json({
       error: 'Failed to generate PDF via Chromium engine',
       details: err.message

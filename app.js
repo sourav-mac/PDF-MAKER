@@ -385,7 +385,9 @@ document.addEventListener('DOMContentLoaded', () => {
         let errMessage = 'PDF generation failed';
         try {
           const errData = await response.json();
-          if (errData && errData.error) errMessage = errData.error;
+          if (errData) {
+            errMessage = errData.details ? `${errData.error}: ${errData.details}` : (errData.error || errMessage);
+          }
         } catch (_) {}
         throw new Error(errMessage);
       }
