@@ -14,7 +14,8 @@ An interactive, modern web application designed to generate, customize, and prin
   - **No Shrinking**: All repeated boxes retain 100% original full size, padding, and bold typography.
   - Optional cutting guide lines (`✂`) for physical slicing after printing.
 - **Strict Single A4 Page Guarantee**: Pre-calculated dimensions ensuring zero page overflow or extra blank pages.
-- **Direct PDF Export & Native Print**: 1-click high-resolution PDF download using `html2pdf.js` plus clean vector `@media print` layout (`Ctrl + P`).
+- **Direct High-Fidelity PDF Export**: 1-click ultra-crisp vector PDF download powered by headless Puppeteer/Chromium.
+- **Dedicated Native Print Option**: Clean vector `@media print` layout with dedicated browser printing button (`Ctrl + P`).
 - **Creator Social Link**: Integrated profile connection with [@sourav__6459](https://www.instagram.com/sourav__6459?stkn=cnd5cHB0dGpwazRv).
 
 ## 🛠️ Built With
@@ -22,10 +23,10 @@ An interactive, modern web application designed to generate, customize, and prin
 - **HTML5**: Semantic structure & A4 page simulation.
 - **CSS3 (Vanilla)**: Responsive studio layout, print stylesheets (`@media print`), and custom box styles.
 - **JavaScript (ES6+)**: Real-time two-way data binding, dynamic slip cloning, and export controllers.
-- **Libraries**:
-  - `html2pdf.js` (Vector-quality client-side PDF generation)
-  - `FontAwesome 6` (Modern iconography)
-  - `Google Fonts` (Montserrat)
+- **Node.js & Express**: Lightweight backend serving the app and handling PDF generation.
+- **Puppeteer & Headless Chromium**: High-fidelity native A4 PDF rendering with embedded typography.
+- **FontAwesome 6** (Modern iconography)
+- **Google Fonts** (Montserrat)
 
 ## 💻 How to Run Locally
 
@@ -37,13 +38,15 @@ An interactive, modern web application designed to generate, customize, and prin
    ```bash
    cd PDF-MAKER
    ```
-3. Open `index.html` in your favorite browser:
-   - Double click `index.html`, or
-   - Run a lightweight server:
-     ```bash
-     python -m http.server 3000
-     ```
-     Then navigate to `http://localhost:3000`.
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+4. Start the application:
+   ```bash
+   npm start
+   ```
+   Then navigate to `http://localhost:3000`.
 
 ## 📄 License
 

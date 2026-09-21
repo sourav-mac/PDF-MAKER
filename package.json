@@ -1,0 +1,28 @@
+{
+  "name": "pdf",
+  "version": "1.0.0",
+  "description": "An interactive, modern web application designed to generate, customize, and print editable examination papers, student slips, and admit card headers with live A4 PDF export.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sourav-mac/PDF-MAKER.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/sourav-mac/PDF-MAKER/issues"
+  },
+  "homepage": "https://github.com/sourav-mac/PDF-MAKER#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "puppeteer": "^25.11.0"
+  }
+}

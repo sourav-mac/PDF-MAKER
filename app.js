@@ -31,7 +31,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Buttons & Extras
   const btnDownload = document.getElementById('btn-download');
+  const btnPrint = document.getElementById('btn-print');
   const mBtnDownload = document.getElementById('m-btn-download');
+  const mBtnPrint = document.getElementById('m-btn-print');
   const btnSampleData = document.getElementById('btn-sample-data');
   const btnReset = document.getElementById('btn-reset');
   const toggleExtraFields = document.getElementById('toggle-extra-fields');
@@ -306,7 +308,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Direct PDF Download using html2pdf.js with offscreen clone
+  // Dedicated Native Browser Printing
+  function triggerBrowserPrint() {
+    window.print();
+  }
+
+  if (btnPrint) {
+    btnPrint.addEventListener('click', triggerBrowserPrint);
+  }
+
+  // Direct PDF Download using Puppeteer/Chromium Backend Engine
   let isGenerating = false;
   btnDownload.addEventListener('click', async () => {
     if (isGenerating) return;
@@ -321,7 +332,7 @@ document.addEventListener('DOMContentLoaded', () => {
       mBtnDownload.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating...';
     }
 
-    showToast("Generating PDF, please wait...");
+    showToast("Generating crisp vector PDF via Chromium...");
 
     const rollNoText = inputRollNo.value.trim();
     const regNoText = inputRegNo.value.trim();
@@ -332,12 +343,7 @@ document.addEventListener('DOMContentLoaded', () => {
       filename = `Exam_Paper_${currentRepeatCount}x_Reg_${regNoText}.pdf`;
     }
 
-    // Create an isolated offscreen clone of printableDoc.
-    // This solves:
-    // 1. Mobile screen where preview-main-area is display:none
-    // 2. CSS transform / zoom level distortions
-    // 3. Absolute positioning height collapse to 0
-    // 4. Multi-page overflow caused by fractional millimeter rounding
+    // Create an isolated clone of printableDoc for pristine vector export
     const clone = printableDoc.cloneNode(true);
     clone.classList.add('export-pdf-mode');
     clone.style.position = 'relative';
@@ -347,13 +353,9 @@ document.addEventListener('DOMContentLoaded', () => {
     clone.style.transition = 'none';
     clone.style.boxShadow = 'none';
     clone.style.border = 'none';
-    clone.style.width = '793px';
-    clone.style.height = '1120px';
-    clone.style.maxHeight = '1120px';
     clone.style.margin = '0';
-    clone.style.boxSizing = 'border-box';
 
-    // Strip contenteditable and remove any borders/underlines on fields in the export clone
+    // Strip contenteditable and remove borders on fields in the export clone
     clone.querySelectorAll('[contenteditable]').forEach(el => {
       el.removeAttribute('contenteditable');
       el.style.border = 'none';
@@ -368,16 +370,7 @@ document.addEventListener('DOMContentLoaded', () => {
       el.style.textDecoration = 'none';
     });
 
-    const exportWrapper = document.createElement('div');
-    exportWrapper.id = 'pdf-export-temp-wrapper';
-    exportWrapper.style.cssText = 'position: fixed; top: -9999px; left: -9999px; width: 793px; height: 1120px; z-index: -9999; background: #ffffff; overflow: hidden; pointer-events: none;';
-    exportWrapper.appendChild(clone);
-    document.body.appendChild(exportWrapper);
-
-    function cleanup() {
-      if (exportWrapper && exportWrapper.parentNode) {
-        exportWrapper.parentNode.removeChild(exportWrapper);
-      }
+    function resetButton() {
       btnDownload.innerHTML = originalBtnHTML;
       btnDownload.disabled = false;
       if (mBtnDownload) {
@@ -387,33 +380,46 @@ document.addEventListener('DOMContentLoaded', () => {
       isGenerating = false;
     }
 
-    const opt = {
-      margin:       0,
-      filename:     filename,
-      image:        { type: 'jpeg', quality: 0.98 },
-      html2canvas:  {
-        scale: 2,
-        useCORS: true,
-        letterRendering: true,
-        logging: false
-      },
-      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-      pagebreak:    { mode: 'avoid-all' }
-    };
-
     try {
-      if (typeof html2pdf !== 'undefined') {
-        await html2pdf().set(opt).from(clone).save();
-        cleanup();
-        showToast("PDF downloaded successfully!");
-      } else {
-        cleanup();
-        window.print();
+      const response = await fetch('/api/generate-pdf', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          html: clone.outerHTML,
+          filename: filename
+        })
+      });
+
+      if (!response.ok) {
+        let errMessage = 'PDF generation failed';
+        try {
+          const errData = await response.json();
+          if (errData && errData.error) errMessage = errData.error;
+        } catch (_) {}
+        throw new Error(errMessage);
       }
+
+      const blob = await response.blob();
+      console.log('Blob received successfully, size:', blob.size);
+      window.lastDownloadedBlob = blob;
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = downloadUrl;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(downloadUrl);
+      a.remove();
+
+      resetButton();
+      showToast("Crisp vector PDF downloaded successfully!");
     } catch (err) {
-      console.error("html2pdf generation error:", err);
-      cleanup();
-      showToast("Direct download failed, opening print dialog...");
+      console.error("Puppeteer PDF generation error:", err);
+      resetButton();
+      showToast("Server PDF generator offline, opening browser print instead...");
       window.print();
     }
   });
@@ -470,6 +476,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Mobile Sticky Bottom Action Buttons
   if (mBtnDownload) {
     mBtnDownload.addEventListener('click', () => btnDownload.click());
+  }
+  if (mBtnPrint) {
+    mBtnPrint.addEventListener('click', triggerBrowserPrint);
   }
 
   // Toast Helper
