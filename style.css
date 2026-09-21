@@ -520,6 +520,7 @@ input, button, textarea, select {
 
 .range-slider {
   -webkit-appearance: none;
+  appearance: none;
   width: 100%;
   height: 5px;
   border-radius: var(--radius-full);
