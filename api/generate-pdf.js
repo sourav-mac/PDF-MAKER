@@ -4,14 +4,16 @@ const A4_PRINT_CSS = `
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
   @page {
     size: A4 portrait;
-    margin: 0;
+    margin: 0mm;
   }
 
-  html, body {
+  html {
     width: 794px;
     height: 1123px;
     margin: 0 !important;
@@ -20,13 +22,22 @@ const A4_PRINT_CSS = `
     background-color: #ffffff !important;
     color: #000000 !important;
     overflow: hidden !important;
-    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
+  }
+
+  body {
+    width: 794px;
+    height: 1123px;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    overflow: hidden !important;
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
   }
 
   .a4-page {
-    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
     width: 794px !important;
     height: 1123px !important;
     max-height: 1123px !important;
@@ -52,6 +63,8 @@ const A4_PRINT_CSS = `
     width: 100% !important;
     height: 100% !important;
     box-sizing: border-box !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
   }
 
   .exam-slip {
@@ -60,6 +73,8 @@ const A4_PRINT_CSS = `
     flex-direction: column !important;
     position: relative !important;
     page-break-inside: avoid !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
   }
 
   /* Cut Line with Scissors */
@@ -73,6 +88,7 @@ const A4_PRINT_CSS = `
     user-select: none !important;
     flex-shrink: 0 !important;
     width: 100% !important;
+    background: transparent !important;
   }
 
   .cut-line .cut-scissors {
@@ -98,7 +114,7 @@ const A4_PRINT_CSS = `
     display: none !important;
   }
 
-  /* 1 Slip: Top-aligned matching original exam sheet */
+  /* 1 Slip */
   .slips-container.repeat-1 {
     justify-content: flex-start !important;
   }
@@ -106,7 +122,7 @@ const A4_PRINT_CSS = `
     flex: none !important;
   }
 
-  /* 2 Slips: Equally divided into 2 equal 50% halves */
+  /* 2 Slips */
   .slips-container.repeat-2 {
     justify-content: space-between !important;
   }
@@ -117,7 +133,7 @@ const A4_PRINT_CSS = `
     justify-content: center !important;
   }
 
-  /* 3 Slips: Equally divided into 3 equal 33.3% sections */
+  /* 3 Slips */
   .slips-container.repeat-3 {
     justify-content: space-between !important;
   }
@@ -128,7 +144,7 @@ const A4_PRINT_CSS = `
     justify-content: center !important;
   }
 
-  /* 4 Slips: Equally divided into 4 equal 25% sections */
+  /* 4 Slips */
   .slips-container.repeat-4 {
     justify-content: space-between !important;
   }
@@ -221,6 +237,7 @@ const A4_PRINT_CSS = `
     gap: 14px !important;
     border: none !important;
     outline: none !important;
+    background: transparent !important;
   }
 
   .info-row {
@@ -230,6 +247,7 @@ const A4_PRINT_CSS = `
     font-size: 13.5px !important;
     border: none !important;
     outline: none !important;
+    color: #000000 !important;
   }
 
   .info-label {
@@ -274,22 +292,21 @@ async function launchBrowser() {
     const puppeteerCoreModule = await import('puppeteer-core');
     const puppeteer = puppeteerCoreModule.default || puppeteerCoreModule;
 
+    // Pre-load font for AWS Lambda environment so glyphs never render as black missing blocks
+    try {
+      await chromium.font('https://raw.githack.com/googlefonts/montserrat/main/fonts/ttf/Montserrat-Regular.ttf');
+      await chromium.font('https://raw.githack.com/googlefonts/montserrat/main/fonts/ttf/Montserrat-Bold.ttf');
+    } catch (fontErr) {
+      console.warn('Chromium font pre-load warning:', fontErr.message);
+    }
+
     const executablePath = await chromium.executablePath();
 
     return await puppeteer.launch({
-      args: [
-        ...chromium.args,
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-gpu',
-        '--single-process',
-        '--no-zygote'
-      ],
-      defaultViewport: { width: 794, height: 1123, deviceScaleFactor: 2 },
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport || { width: 794, height: 1123 },
       executablePath: executablePath,
-      headless: chromium.headless !== undefined ? chromium.headless : true,
-      ignoreHTTPSErrors: true
+      headless: chromium.headless,
     });
   } else {
     // Local / standard server environment
@@ -311,7 +328,7 @@ async function launchBrowser() {
         'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
         'C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe',
         'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
-        'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+        'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
         '/usr/bin/google-chrome',
         '/usr/bin/chromium',
         '/usr/bin/chromium-browser'
@@ -363,19 +380,19 @@ module.exports = async function handler(req, res) {
 
   const fullHtmlDocument = `
     <!DOCTYPE html>
-    <html lang="en">
+    <html lang="en" style="background-color: #ffffff !important; background: #ffffff !important;">
     <head>
       <meta charset="UTF-8">
       <title>Printable Exam Sheet</title>
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600;1,700&display=swap" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800&display=swap" rel="stylesheet">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
       <style>
         ${A4_PRINT_CSS}
       </style>
     </head>
-    <body>
+    <body style="margin: 0 !important; padding: 0 !important; background-color: #ffffff !important; background: #ffffff !important; color: #000000 !important;">
       ${html}
     </body>
     </html>
@@ -396,6 +413,15 @@ module.exports = async function handler(req, res) {
     await page.setContent(fullHtmlDocument, {
       waitUntil: 'load',
       timeout: 15000
+    });
+
+    // Emulate screen media to guarantee exact CSS colors & styles
+    await page.emulateMediaType('screen');
+
+    // Force background white in DOM
+    await page.evaluate(() => {
+      document.documentElement.style.backgroundColor = '#ffffff';
+      document.body.style.backgroundColor = '#ffffff';
     });
 
     try {
