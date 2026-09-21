@@ -7,10 +7,10 @@
   <meta name="description" content="Customizable examination paper generator with live editable A4 PDF preview, registration number and roll number form.">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="favicon.png">
-  <!-- Google Fonts: Montserrat -->
+  <!-- Google Fonts: Plus Jakarta Sans (UI) & Montserrat (Document) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600;1,700&display=swap" rel="stylesheet">
   <!-- FontAwesome Icons for modern UI -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
@@ -40,158 +40,242 @@
       </div>
 
       <div class="card form-card">
-        <div class="card-title">
-          <i class="fa-solid fa-pen-to-square"></i> Student & Exam Details
+        <div class="card-header-clean">
+          <div class="card-title-main">
+            <i class="fa-solid fa-pen-ruler"></i>
+            <span>Exam Header Configuration</span>
+          </div>
+          <p class="card-subtitle-main">Fill details below or edit directly on the live sheet</p>
         </div>
+
         <form id="pdf-form" onsubmit="return false;">
-          <div class="form-group">
-            <label for="exam-title">
-              <span>Exam Title</span>
-              <span class="badge">Header Line 1</span>
-            </label>
-            <input 
-              type="text" 
-              id="exam-title" 
-              class="form-input" 
-              value="B.SC NURSING 6TH SEMESTER EXAMINATION, 2026" 
-              placeholder="e.g. B.SC NURSING 6TH SEMESTER EXAMINATION, 2026"
-            >
-          </div>
-
-          <div class="form-group">
-            <label for="subject-name">
-              <span>Subject / Paper Name</span>
-              <span class="badge">Header Line 2</span>
-            </label>
-            <input 
-              type="text" 
-              id="subject-name" 
-              class="form-input" 
-              value="MENTAL HEALTH NURSING (I & II)" 
-              placeholder="e.g. MENTAL HEALTH NURSING (I & II)"
-            >
-          </div>
-
-          <div class="form-row">
-            <div class="form-group col">
-              <label for="reg-no">
-                <span>Registration No.</span>
-                <span class="required">*</span>
+          <!-- Section 1: Exam Info -->
+          <div class="form-section">
+            <div class="section-label-row">
+              <span class="section-heading">
+                <i class="fa-solid fa-graduation-cap"></i> Exam Details
+              </span>
+            </div>
+            
+            <div class="form-group">
+              <label for="exam-title">
+                <span>Examination Title</span>
               </label>
               <div class="input-with-icon">
-                <i class="fa-solid fa-id-card"></i>
+                <i class="fa-solid fa-heading"></i>
                 <input 
                   type="text" 
-                  id="reg-no" 
+                  id="exam-title" 
                   class="form-input" 
-                  placeholder="e.g. 202301048"
-                  value=""
+                  value="B.SC NURSING 6TH SEMESTER EXAMINATION, 2026" 
+                  placeholder="e.g. B.SC NURSING 6TH SEMESTER EXAMINATION, 2026"
+                  autocomplete="off"
                 >
               </div>
             </div>
 
-            <div class="form-group col">
-              <label for="roll-no">
-                <span>Roll No.</span>
-                <span class="required">*</span>
+            <div class="form-group">
+              <label for="subject-name">
+                <span>Subject / Paper Name</span>
               </label>
               <div class="input-with-icon">
-                <i class="fa-solid fa-user-graduate"></i>
+                <i class="fa-solid fa-book-bookmark"></i>
                 <input 
                   type="text" 
-                  id="roll-no" 
+                  id="subject-name" 
                   class="form-input" 
-                  placeholder="e.g. 1048"
-                  value=""
+                  value="MENTAL HEALTH NURSING (I & II)" 
+                  placeholder="e.g. MENTAL HEALTH NURSING (I & II)"
+                  autocomplete="off"
                 >
               </div>
             </div>
           </div>
 
-          <!-- Advanced / Optional Fields Accordion -->
-          <div class="accordion-item">
-            <button type="button" class="accordion-toggle" id="toggle-extra-fields">
-              <span><i class="fa-solid fa-sliders"></i> Additional Settings & Content</span>
-              <i class="fa-solid fa-chevron-down toggle-arrow"></i>
-            </button>
-            <div class="accordion-content" id="extra-fields-content">
-              <div class="form-group">
-                <label for="institution-name">Institution / Center (Optional)</label>
-                <input type="text" id="institution-name" class="form-input" placeholder="e.g. COLLEGE OF NURSING">
+          <!-- Section 2: Student Info -->
+          <div class="form-section">
+            <div class="section-label-row">
+              <span class="section-heading">
+                <i class="fa-solid fa-user-check"></i> Student Details
+              </span>
+              <span class="section-hint">Required for slip</span>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col">
+                <label for="reg-no">
+                  <span>Reg No.</span>
+                  <span class="required">*</span>
+                </label>
+                <div class="input-with-icon">
+                  <i class="fa-solid fa-id-card"></i>
+                  <input 
+                    type="text" 
+                    id="reg-no" 
+                    class="form-input font-mono" 
+                    placeholder="202301048"
+                    value=""
+                    autocomplete="off"
+                  >
+                </div>
               </div>
 
-              <div class="form-row">
-                <div class="form-group col">
-                  <label for="exam-date">Date / Session</label>
-                  <input type="text" id="exam-date" class="form-input" placeholder="e.g. 24-MAY-2026">
-                </div>
-                <div class="form-group col">
-                  <label for="exam-time">Time / Marks</label>
-                  <input type="text" id="exam-time" class="form-input" placeholder="e.g. 3 Hours | 75 Marks">
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label for="box-height">Header Box Min-Height</label>
-                <input type="range" id="box-height" min="120" max="300" value="160" class="range-slider">
-                <div class="range-labels">
-                  <span>Compact</span>
-                  <span id="box-height-val">160px</span>
-                  <span>Spacious</span>
+              <div class="form-group col">
+                <label for="roll-no">
+                  <span>Roll No.</span>
+                  <span class="required">*</span>
+                </label>
+                <div class="input-with-icon">
+                  <i class="fa-solid fa-hashtag"></i>
+                  <input 
+                    type="text" 
+                    id="roll-no" 
+                    class="form-input font-mono" 
+                    placeholder="1048"
+                    value=""
+                    autocomplete="off"
+                  >
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Page Repetition / Multi-Slip Feature -->
-          <div class="form-group repetition-control-card">
-            <label>
-              <span><i class="fa-solid fa-copy"></i> Repeat on Same Page</span>
+          <!-- Section 3: Page Repetition / Multi-Slip Feature -->
+          <div class="form-section repetition-section">
+            <div class="section-label-row">
+              <span class="section-heading">
+                <i class="fa-solid fa-layer-group"></i> Page Layout (Slips)
+              </span>
               <span class="badge" id="repeat-badge">1 Slip (Original)</span>
-            </label>
+            </div>
+            
             <div class="repeat-selector" id="repeat-selector">
-              <button type="button" class="btn-repeat active" data-count="1">
-                <i class="fa-regular fa-square"></i> 1 Slip
+              <button type="button" class="btn-repeat active" data-count="1" title="1 Header Slip">
+                <i class="fa-regular fa-square"></i>
+                <span>1 Slip</span>
               </button>
-              <button type="button" class="btn-repeat" data-count="2">
-                <i class="fa-solid fa-table-rows"></i> 2 Slips
+              <button type="button" class="btn-repeat" data-count="2" title="2 Header Slips (Half Page)">
+                <i class="fa-solid fa-table-rows"></i>
+                <span>2 Slips</span>
               </button>
-              <button type="button" class="btn-repeat" data-count="3">
-                <i class="fa-solid fa-bars"></i> 3 Slips
+              <button type="button" class="btn-repeat" data-count="3" title="3 Header Slips (Third Page)">
+                <i class="fa-solid fa-bars"></i>
+                <span>3 Slips</span>
               </button>
-              <button type="button" class="btn-repeat" data-count="4">
-                <i class="fa-solid fa-table-cells-large"></i> 4 Slips
+              <button type="button" class="btn-repeat" data-count="4" title="4 Header Slips (Quarter Page)">
+                <i class="fa-solid fa-table-cells-large"></i>
+                <span>4 Slips</span>
               </button>
             </div>
 
             <div class="repeat-options" id="repeat-options" style="display: none;">
               <label class="checkbox-label" for="show-cut-lines">
                 <input type="checkbox" id="show-cut-lines" checked>
+                <span class="checkbox-custom"></span>
                 <span><i class="fa-solid fa-scissors"></i> Show cutting guide lines between slips</span>
               </label>
+            </div>
+          </div>
+
+          <!-- Section 4: Advanced / Optional Fields Accordion -->
+          <div class="accordion-item">
+            <button type="button" class="accordion-toggle" id="toggle-extra-fields">
+              <div class="accordion-title-wrap">
+                <i class="fa-solid fa-sliders"></i>
+                <span>Additional Settings & Meta</span>
+              </div>
+              <i class="fa-solid fa-chevron-down toggle-arrow"></i>
+            </button>
+            <div class="accordion-content" id="extra-fields-content">
+              <div class="accordion-inner">
+                <div class="form-group">
+                  <label for="institution-name">Institution / College Name (Optional)</label>
+                  <div class="input-with-icon">
+                    <i class="fa-solid fa-building-columns"></i>
+                    <input 
+                      type="text" 
+                      id="institution-name" 
+                      class="form-input" 
+                      placeholder="e.g. COLLEGE OF NURSING"
+                      autocomplete="off"
+                    >
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col">
+                    <label for="exam-date">Date / Session</label>
+                    <div class="input-with-icon">
+                      <i class="fa-solid fa-calendar-days"></i>
+                      <input 
+                        type="text" 
+                        id="exam-date" 
+                        class="form-input" 
+                        placeholder="e.g. 24-MAY-2026"
+                        autocomplete="off"
+                      >
+                    </div>
+                  </div>
+                  <div class="form-group col">
+                    <label for="exam-time">Time / Marks</label>
+                    <div class="input-with-icon">
+                      <i class="fa-solid fa-clock"></i>
+                      <input 
+                        type="text" 
+                        id="exam-time" 
+                        class="form-input" 
+                        placeholder="e.g. 3 Hrs | 75 Marks"
+                        autocomplete="off"
+                      >
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group slider-group">
+                  <div class="slider-header">
+                    <label for="box-height">Slip Box Height</label>
+                    <span class="slider-pill" id="box-height-val">160px</span>
+                  </div>
+                  <input type="range" id="box-height" min="120" max="300" value="160" class="range-slider">
+                  <div class="range-labels">
+                    <span>Compact (120px)</span>
+                    <span>Spacious (300px)</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
           <!-- Quick Action Buttons -->
           <div class="action-buttons">
             <button type="button" id="btn-download" class="btn btn-primary" title="Export crisp vector A4 PDF via Chromium">
-              <i class="fa-solid fa-file-arrow-down"></i> Download PDF
+              <div class="btn-glow-effect"></div>
+              <i class="fa-solid fa-file-arrow-down btn-icon"></i>
+              <span class="btn-text-main">Download PDF</span>
+              <span class="btn-badge">A4 Vector</span>
             </button>
           </div>
 
           <div class="secondary-actions">
-            <button type="button" id="btn-sample-data" class="btn-text">
-              <i class="fa-solid fa-wand-magic-sparkles"></i> Fill Demo Values
+            <button type="button" id="btn-sample-data" class="btn-secondary-action">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+              <span>Fill Sample Data</span>
             </button>
-            <button type="button" id="btn-reset" class="btn-text text-danger">
-              <i class="fa-solid fa-rotate-left"></i> Reset Form
+            <button type="button" id="btn-reset" class="btn-secondary-action btn-secondary-danger">
+              <i class="fa-solid fa-rotate-left"></i>
+              <span>Reset Fields</span>
             </button>
           </div>
         </form>
 
         <div class="tip-box">
-          <i class="fa-solid fa-lightbulb"></i>
-          <span><strong>Pro-Tip:</strong> You can also click and type directly on any text inside the preview sheet on the right!</span>
+          <div class="tip-icon-wrap">
+            <i class="fa-solid fa-lightbulb"></i>
+          </div>
+          <div class="tip-content">
+            <span class="tip-title">Live Two-Way Sync</span>
+            <span class="tip-desc">You can also click and type directly on any text inside the preview sheet on the right!</span>
+          </div>
         </div>
 
         <!-- Instagram Follow Card -->
