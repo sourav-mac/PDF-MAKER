@@ -14,8 +14,7 @@ An interactive, modern web application designed to generate, customize, and prin
   - **No Shrinking**: All repeated boxes retain 100% original full size, padding, and bold typography.
   - Optional cutting guide lines (`✂`) for physical slicing after printing.
 - **Strict Single A4 Page Guarantee**: Pre-calculated dimensions ensuring zero page overflow or extra blank pages.
-- **Direct High-Fidelity PDF Export**: 1-click ultra-crisp vector PDF download powered by headless Puppeteer/Chromium.
-- **Dedicated Native Print Option**: Clean vector `@media print` layout with dedicated browser printing button (`Ctrl + P`).
+- **Direct High-Fidelity PDF Export**: 1-click ultra-crisp vector A4 PDF direct download powered by headless Puppeteer/Chromium.
 - **Creator Social Link**: Integrated profile connection with [@sourav__6459](https://www.instagram.com/sourav__6459?stkn=cnd5cHB0dGpwazRv).
 
 ## 🛠️ Built With

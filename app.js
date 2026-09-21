@@ -31,9 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Buttons & Extras
   const btnDownload = document.getElementById('btn-download');
-  const btnPrint = document.getElementById('btn-print');
   const mBtnDownload = document.getElementById('m-btn-download');
-  const mBtnPrint = document.getElementById('m-btn-print');
   const btnSampleData = document.getElementById('btn-sample-data');
   const btnReset = document.getElementById('btn-reset');
   const toggleExtraFields = document.getElementById('toggle-extra-fields');
@@ -308,15 +306,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Dedicated Native Browser Printing
-  function triggerBrowserPrint() {
-    window.print();
-  }
-
-  if (btnPrint) {
-    btnPrint.addEventListener('click', triggerBrowserPrint);
-  }
-
   // Direct PDF Download using Puppeteer/Chromium Backend Engine
   let isGenerating = false;
   btnDownload.addEventListener('click', async () => {
@@ -415,12 +404,11 @@ document.addEventListener('DOMContentLoaded', () => {
       a.remove();
 
       resetButton();
-      showToast("Crisp vector PDF downloaded successfully!");
+      showToast("PDF downloaded successfully!");
     } catch (err) {
       console.error("Puppeteer PDF generation error:", err);
       resetButton();
-      showToast("Server PDF generator offline, opening browser print instead...");
-      window.print();
+      showToast(err.message || "Failed to generate PDF. Make sure server is running.");
     }
   });
 
@@ -476,9 +464,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Mobile Sticky Bottom Action Buttons
   if (mBtnDownload) {
     mBtnDownload.addEventListener('click', () => btnDownload.click());
-  }
-  if (mBtnPrint) {
-    mBtnPrint.addEventListener('click', triggerBrowserPrint);
   }
 
   // Toast Helper
