@@ -1119,6 +1119,10 @@ input, button, textarea, select {
   line-height: 1.35;
   margin-bottom: 14px;
   cursor: text;
+  border: none;
+  border-bottom: none;
+  text-decoration: none;
+  outline: none;
 }
 
 .extra-meta-row {
@@ -1126,8 +1130,10 @@ input, button, textarea, select {
   justify-content: space-between;
   font-size: 12px;
   font-weight: 600;
-  padding-bottom: 8px;
-  border-bottom: 1px dashed #bbb;
+  padding-bottom: 4px;
+  border: none;
+  border-bottom: none;
+  text-decoration: none;
   margin-bottom: 14px;
 }
 

@@ -217,6 +217,10 @@ const A4_PRINT_CSS = `
     text-transform: uppercase !important;
     line-height: 1.35 !important;
     margin-bottom: 14px !important;
+    border: none !important;
+    border-bottom: none !important;
+    text-decoration: none !important;
+    outline: none !important;
   }
 
   .extra-meta-row {
@@ -224,8 +228,11 @@ const A4_PRINT_CSS = `
     justify-content: space-between !important;
     font-size: 12px !important;
     font-weight: 600 !important;
-    padding-bottom: 8px !important;
-    border-bottom: 1px dashed #bbb !important;
+    padding-bottom: 4px !important;
+    border: none !important;
+    border-bottom: none !important;
+    text-decoration: none !important;
+    outline: none !important;
     margin-bottom: 14px !important;
     color: #000000 !important;
   }
