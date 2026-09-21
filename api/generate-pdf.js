@@ -6,8 +6,10 @@ async function launchBrowser() {
   const isVercel = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_VERSION || process.env.AWS_REGION);
 
   if (isVercel) {
-    const chromium = require('@sparticuz/chromium');
-    const puppeteer = require('puppeteer-core');
+    const chromiumModule = await import('@sparticuz/chromium');
+    const chromium = chromiumModule.default || chromiumModule;
+    const puppeteerCoreModule = await import('puppeteer-core');
+    const puppeteer = puppeteerCoreModule.default || puppeteerCoreModule;
 
     const executablePath = await chromium.executablePath();
 
