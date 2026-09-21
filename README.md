@@ -25,7 +25,7 @@ An interactive, modern web application designed to generate, customize, and prin
 - **Libraries**:
   - `html2pdf.js` (Vector-quality client-side PDF generation)
   - `FontAwesome 6` (Modern iconography)
-  - `Google Fonts` (Inter & Roboto)
+  - `Google Fonts` (Montserrat)
 
 ## 💻 How to Run Locally
 
