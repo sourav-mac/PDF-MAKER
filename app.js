@@ -321,7 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
       mBtnDownload.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating...';
     }
 
-    showToast("Preparing your PDF, just a moment please...");
+    showToast("✨ Preparing your PDF, just a moment please... ✨", "fa-wand-magic-sparkles");
 
     const rollNoText = inputRollNo.value.trim();
     const regNoText = inputRegNo.value.trim();
