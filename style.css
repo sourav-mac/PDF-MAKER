@@ -1246,26 +1246,30 @@ input, button, textarea, select {
 }
 
 @media screen and (max-width: 850px) {
-  body {
-    height: 100vh;
+  html, body {
+    height: 100%;
     height: 100dvh;
     overflow: hidden;
+    position: fixed;
+    width: 100%;
   }
 
   .app-container {
     flex-direction: column;
-    height: 100vh;
+    height: 100%;
     height: 100dvh;
+    width: 100%;
     overflow: hidden;
+    position: relative;
   }
 
   /* Mobile Header Navigation Tabs */
   .mobile-nav-tabs {
     display: flex;
     width: 100%;
-    height: 50px;
-    background: #0f172a;
-    border-bottom: 1px solid var(--border-subtle);
+    height: 48px;
+    background: #0b1120;
+    border-bottom: 1px solid var(--border-medium);
     position: relative;
     z-index: 50;
     flex-shrink: 0;
@@ -1280,16 +1284,18 @@ input, button, textarea, select {
     background: transparent;
     border: none;
     color: var(--text-secondary);
-    font-size: 13.5px;
+    font-size: 13px;
     font-weight: 700;
     cursor: pointer;
-    transition: var(--transition);
+    transition: var(--transition-fast);
     border-bottom: 3px solid transparent;
     position: relative;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .mobile-tab-btn i {
-    font-size: 14px;
+    font-size: 13.5px;
   }
 
   .mobile-tab-btn.active {
@@ -1298,26 +1304,112 @@ input, button, textarea, select {
     border-bottom-color: #3b82f6;
   }
 
+  /* Sidebar Form on Mobile */
+  .sidebar,
+  #app-sidebar {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    border-right: none;
+    box-shadow: none;
+  }
+
+  .sidebar-header {
+    padding: 12px 16px;
+    gap: 12px;
+  }
+
+  .sidebar-header .logo-icon {
+    width: 38px;
+    height: 38px;
+    font-size: 18px;
+  }
+
+  .sidebar-header h2 {
+    font-size: 16px;
+  }
+
+  .sidebar-header .subtitle {
+    font-size: 11px;
+  }
+
+  .form-card {
+    padding: 14px 14px 100px 14px;
+    gap: 14px;
+  }
+
+  .form-section {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .form-input {
+    font-size: 16px; /* Prevents auto-zoom on iOS Safari */
+    padding: 9px 12px;
+  }
+
+  .input-with-icon .form-input {
+    padding-left: 34px;
+  }
+
+  .form-row {
+    display: flex;
+    gap: 8px;
+  }
+
+  .form-row .col {
+    min-width: 0;
+  }
+
+  /* Segmented selector on small screens */
+  .repeat-selector {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    padding: 3px;
+  }
+
+  .btn-repeat {
+    padding: 7px 2px;
+    font-size: 11px;
+    gap: 4px;
+  }
+
+  .btn-repeat i {
+    font-size: 11px;
+  }
+
+  .secondary-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  .btn-secondary-action {
+    padding: 8px 6px;
+    font-size: 11px;
+  }
+
+  .instagram-card {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px 12px;
+  }
+
+  .instagram-card-left {
+    gap: 8px;
+  }
+
   /* Screen Toggle between Form & Preview */
   .app-container:not(.show-preview) #app-sidebar {
     display: flex !important;
     flex: 1;
-    width: 100%;
-    min-width: 100%;
-    height: calc(100vh - 50px - 64px);
-    height: calc(100dvh - 50px - 64px);
+    height: calc(100vh - 48px - 60px);
+    height: calc(100dvh - 48px - 60px);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    border-right: none;
-    padding-bottom: 24px;
   }
 
   .sidebar .action-buttons {
     display: none;
-  }
-
-  .secondary-actions {
-    margin-top: 14px;
   }
 
   .app-container:not(.show-preview) #preview-main-area {
@@ -1332,49 +1424,77 @@ input, button, textarea, select {
     display: flex !important;
     flex: 1;
     width: 100%;
-    height: calc(100vh - 50px - 64px);
-    height: calc(100dvh - 50px - 64px);
+    height: calc(100vh - 48px - 60px);
+    height: calc(100dvh - 48px - 60px);
     overflow: hidden;
   }
 
+  /* Preview Toolbar on Mobile */
   .toolbar {
-    padding: 0 14px;
-    height: 48px;
+    padding: 0 10px;
+    height: 44px;
+    gap: 6px;
   }
 
-  .topbar-instagram-btn span {
+  .document-meta {
+    font-size: 12px;
+    gap: 6px;
+  }
+
+  .document-meta .doc-title {
     display: none;
   }
 
   .topbar-instagram-btn {
-    padding: 6px 10px;
+    display: none;
+  }
+
+  .toolbar-divider {
+    display: none;
+  }
+
+  .icon-btn {
+    width: 32px;
+    height: 32px;
+  }
+
+  #zoom-level {
+    font-size: 11.5px;
+    min-width: 40px;
   }
 
   .paper-viewport {
-    padding: 20px 10px 40px 10px;
+    padding: 12px 6px 80px 6px;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    display: flex;
+    justify-content: center;
     align-items: flex-start;
   }
 
+  /* Mobile Sticky Bottom Download Bar */
   .mobile-sticky-bar {
     display: flex;
     position: fixed;
     bottom: 0;
     left: 0;
+    right: 0;
     width: 100%;
-    height: 64px;
-    background: rgba(14, 21, 38, 0.95);
-    border-top: 1px solid var(--border-subtle);
-    padding: 10px 16px;
-    gap: 12px;
+    height: 60px;
+    background: rgba(11, 17, 32, 0.96);
+    border-top: 1px solid var(--border-medium);
+    padding: 8px 14px;
+    padding-bottom: max(8px, env(safe-area-inset-bottom));
+    gap: 10px;
     z-index: 100;
-    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(16px);
   }
 
   .mobile-act-btn {
-    height: 100%;
+    flex: 1;
+    height: 44px;
     border-radius: var(--radius-md);
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: 700;
     display: flex;
     align-items: center;
@@ -1382,15 +1502,35 @@ input, button, textarea, select {
     gap: 8px;
     cursor: pointer;
     border: none;
-    transition: var(--transition);
+    transition: var(--transition-fast);
+    -webkit-tap-highlight-color: transparent;
   }
 
   .btn-m-primary {
-    flex: 1;
-    width: 100%;
     background: var(--accent-gradient);
     color: #ffffff;
     border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .btn-m-primary:active {
+    opacity: 0.92;
+  }
+
+  /* Mobile Toast */
+  .toast {
+    left: 50% !important;
+    right: auto !important;
+    bottom: 74px !important;
+    transform: translate(-50%, 80px);
+    width: calc(100% - 32px);
+    max-width: 360px;
+    font-size: 12.5px;
+    padding: 11px 16px;
+    justify-content: center;
+  }
+
+  .toast.show {
+    transform: translate(-50%, 0);
   }
 }
 
