@@ -1036,6 +1036,15 @@ body {
     padding-bottom: 20px;
   }
 
+  /* Prevent duplicate download button on mobile: keep only bottom sticky button */
+  .sidebar .action-buttons {
+    display: none;
+  }
+
+  .secondary-actions {
+    margin-top: 14px;
+  }
+
   .app-container:not(.show-preview) #preview-main-area {
     display: none !important;
   }
@@ -1144,7 +1153,8 @@ body {
   }
 
   .btn-m-primary {
-    flex: 1.6;
+    flex: 1;
+    width: 100%;
     background: linear-gradient(135deg, #2563eb, #1d4ed8);
     color: #ffffff;
     box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);

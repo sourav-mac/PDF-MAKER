@@ -31,9 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Buttons & Extras
   const btnDownload = document.getElementById('btn-download');
-  const btnPrint = document.getElementById('btn-print');
   const mBtnDownload = document.getElementById('m-btn-download');
-  const mBtnPrint = document.getElementById('m-btn-print');
   const btnSampleData = document.getElementById('btn-sample-data');
   const btnReset = document.getElementById('btn-reset');
   const toggleExtraFields = document.getElementById('toggle-extra-fields');
@@ -308,11 +306,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Print Action
-  btnPrint.addEventListener('click', () => {
-    window.print();
-  });
-
   // Direct PDF Download using html2pdf.js with offscreen clone
   let isGenerating = false;
   btnDownload.addEventListener('click', async () => {
@@ -477,9 +470,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Mobile Sticky Bottom Action Buttons
   if (mBtnDownload) {
     mBtnDownload.addEventListener('click', () => btnDownload.click());
-  }
-  if (mBtnPrint) {
-    mBtnPrint.addEventListener('click', () => btnPrint.click());
   }
 
   // Toast Helper
