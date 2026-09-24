@@ -42,11 +42,19 @@
       </div>
 
       <div class="form-card">
-        <!-- Upload Button / Dropzone -->
+        <!-- Upload Area (Initial State) -->
         <div class="upload-dropzone" id="pdf-dropzone">
           <input type="file" id="pdf-file-input" accept=".pdf,application/pdf" style="display: none;">
-          <i class="fa-solid fa-file-arrow-up"></i>
-          <span>Upload PDF</span>
+          <div class="upload-zone-icon">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+          </div>
+          <div class="upload-zone-text">
+            <h3>Upload PDF Document</h3>
+            <p>Click to browse or drag & drop file</p>
+          </div>
+          <span class="upload-zone-btn">
+            <i class="fa-solid fa-file-pdf"></i> Select PDF
+          </span>
         </div>
 
         <!-- Document Meta Bar when file is loaded -->
@@ -104,6 +112,17 @@
         </div>
 
         <div class="toolbar-actions">
+          <a 
+            href="https://www.instagram.com/sourav__6459?stkn=cnd5cHB0dGpwazRv" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            class="cute-topbar-pill"
+            title="Follow the creator on Instagram"
+          >
+            <i class="fa-brands fa-instagram"></i>
+            <span>Follow the creator</span>
+          </a>
+          <div class="toolbar-divider"></div>
           <button id="zoom-out" class="icon-btn" title="Zoom Out"><i class="fa-solid fa-minus"></i></button>
           <span id="zoom-level">100%</span>
           <button id="zoom-in" class="icon-btn" title="Zoom In"><i class="fa-solid fa-plus"></i></button>
@@ -114,8 +133,41 @@
       <!-- Scrollable Preview Container -->
       <div class="paper-viewport" id="viewport">
         <div class="paper-wrapper" id="paper-wrapper">
-          <!-- PDF Canvas & Text Overlay Stage -->
-          <div class="custom-pdf-stage" id="custom-pdf-stage">
+          <!-- WELCOME PLACEHOLDER (Visible when no PDF is loaded) -->
+          <div class="preview-welcome-sheet" id="preview-welcome-sheet">
+            <div class="welcome-watermark-icon">
+              <i class="fa-solid fa-file-invoice"></i>
+            </div>
+            <div class="welcome-content-card">
+              <div class="welcome-icon-bubble">
+                <i class="fa-solid fa-file-arrow-up"></i>
+              </div>
+              <h2>PDF Live Preview</h2>
+              <p>Upload any PDF to start editing text inline & via direct form</p>
+              
+              <div class="welcome-features-row">
+                <div class="welcome-feature-item">
+                  <i class="fa-solid fa-bolt"></i>
+                  <span>Auto Extract</span>
+                </div>
+                <div class="welcome-feature-item">
+                  <i class="fa-solid fa-pen"></i>
+                  <span>Inline Edit</span>
+                </div>
+                <div class="welcome-feature-item">
+                  <i class="fa-solid fa-download"></i>
+                  <span>Instant PDF</span>
+                </div>
+              </div>
+
+              <button type="button" class="btn-welcome-upload" id="btn-welcome-upload">
+                <i class="fa-solid fa-plus"></i> Upload PDF to Start
+              </button>
+            </div>
+          </div>
+
+          <!-- PDF Canvas & Text Overlay Stage (Hidden until PDF is loaded) -->
+          <div class="custom-pdf-stage" id="custom-pdf-stage" style="display: none;">
             <canvas id="pdf-render-canvas" class="pdf-render-canvas"></canvas>
             <div id="pdf-text-layer" class="pdf-text-layer"></div>
             <div id="pdf-annotations-layer" class="pdf-annotations-layer"></div>

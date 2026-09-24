@@ -33,6 +33,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnPrevPage = document.getElementById('btn-prev-page');
   const btnNextPage = document.getElementById('btn-next-page');
 
+  const previewWelcomeSheet = document.getElementById('preview-welcome-sheet');
+  const btnWelcomeUpload = document.getElementById('btn-welcome-upload');
+  if (btnWelcomeUpload) {
+    btnWelcomeUpload.addEventListener('click', () => pdfFileInput.click());
+  }
+
   // Zoom Controls
   const zoomInBtn = document.getElementById('zoom-in');
   const zoomOutBtn = document.getElementById('zoom-out');
@@ -54,10 +60,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* Zoom Controller */
   function applyZoom(zoom) {
+    if (!pdfState.loadedPdfDoc) {
+      if (paperWrapper) {
+        paperWrapper.style.width = '100%';
+        paperWrapper.style.height = 'auto';
+        paperWrapper.style.display = 'flex';
+        paperWrapper.style.alignItems = 'center';
+        paperWrapper.style.justifyContent = 'center';
+      }
+      return;
+    }
+
     currentZoom = Math.min(Math.max(zoom, 0.2), 2.0);
-    customPdfStage.style.transform = `scale(${currentZoom})`;
-    customPdfStage.style.transformOrigin = 'top center';
+    if (customPdfStage) {
+      customPdfStage.style.transform = `scale(${currentZoom})`;
+      customPdfStage.style.transformOrigin = 'top center';
+    }
     if (paperWrapper && pdfState.pageWidth && pdfState.pageHeight) {
+      paperWrapper.style.display = 'block';
       paperWrapper.style.width = `${Math.round(pdfState.pageWidth * currentZoom)}px`;
       paperWrapper.style.height = `${Math.round(pdfState.pageHeight * currentZoom)}px`;
     }
@@ -69,6 +89,11 @@ document.addEventListener('DOMContentLoaded', () => {
   zoomResetBtn.addEventListener('click', () => autoFit());
 
   function autoFit() {
+    if (!pdfState.loadedPdfDoc) {
+      applyZoom(1);
+      return;
+    }
+
     const viewportWidth = window.innerWidth;
     const isMobile = viewportWidth <= 850;
     let baseWidth = pdfState.pageWidth || 794;
@@ -154,8 +179,11 @@ document.addEventListener('DOMContentLoaded', () => {
       pdfState.pagesData = {};
 
       docFileName.innerText = filename;
+      document.body.classList.add('pdf-loaded');
       docInfoBar.style.display = 'flex';
       pdfDropzone.style.display = 'none';
+      if (previewWelcomeSheet) previewWelcomeSheet.style.display = 'none';
+      if (customPdfStage) customPdfStage.style.display = 'block';
       pdfFieldsList.style.display = 'flex';
       pdfActionButtons.style.display = 'flex';
 
