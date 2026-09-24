@@ -2196,30 +2196,37 @@ input, button, textarea, select {
 .pdf-text-item {
   position: absolute;
   cursor: text;
-  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
+  font-family: Arial, Helvetica, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-weight: 700;
   line-height: 1;
   box-sizing: border-box;
-  padding: 2px 4px;
-  margin: -2px -4px;
-  border-radius: 1px;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 0;
   outline: none !important;
   border: none !important;
   user-select: text;
   transform-origin: 0 0;
   display: inline-block;
   white-space: nowrap;
-  letter-spacing: 0.2px;
+  letter-spacing: 0;
   /* Transparent by default so original canvas watermark, fonts and colors are 100% faithful */
   color: transparent;
   background-color: transparent;
   z-index: 5;
 }
 
-/* When focused or edited: Become solid with white mask over old text without ugly borders */
+.pdf-text-item.is-bold {
+  font-weight: 700 !important;
+}
+
+.pdf-text-item.is-normal {
+  font-weight: 400 !important;
+}
+
+/* When focused or edited: Become solid with white mask over old text using exact detected/chosen color */
 .pdf-text-item:focus {
   background-color: #ffffff !important;
-  color: #000000 !important;
   outline: none !important;
   border: none !important;
   box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.4);
@@ -2228,7 +2235,6 @@ input, button, textarea, select {
 
 .pdf-text-item.is-edited {
   background-color: #ffffff !important;
-  color: #000000 !important;
   outline: none !important;
   border: none !important;
   box-shadow: none !important;
@@ -2396,6 +2402,573 @@ input, button, textarea, select {
   background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+/* ==========================================================================
+   Editor Toolbar Quick Tools (Add Text, Add Image, Reorder Pages)
+   ========================================================================== */
+.editor-quick-tools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tool-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #e2e8f0;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tool-btn:hover {
+  background: rgba(37, 99, 235, 0.2);
+  border-color: rgba(59, 130, 246, 0.5);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.tool-btn i {
+  font-size: 12px;
+  color: #60a5fa;
+}
+
+/* Sidebar Quick Tools */
+.sidebar-quick-tools {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.sidebar-tool-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 9px 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px dashed rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-sm);
+  color: #cbd5e1;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sidebar-tool-btn:hover {
+  background: rgba(37, 99, 235, 0.15);
+  border-color: #3b82f6;
+  border-style: solid;
+  color: #ffffff;
+}
+
+.sidebar-tool-btn i {
+  color: #38bdf8;
+  font-size: 13px;
+}
+
+/* ==========================================================================
+   Field Card Controls: Font Size & Delete
+   ========================================================================== */
+.field-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.field-font-size-ctrl {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-xs);
+  padding: 1px 4px;
+  gap: 3px;
+}
+
+.field-color-picker {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.field-color-picker::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.field-color-picker::-webkit-color-swatch {
+  border: none;
+  border-radius: 2px;
+}
+
+.btn-bold-toggle {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  transition: all 0.15s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.2;
+}
+
+.btn-bold-toggle.active {
+  background: rgba(59, 130, 246, 0.25);
+  border-color: #3b82f6;
+  color: #38bdf8;
+}
+
+.btn-bold-toggle:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+.fs-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 10px;
+  padding: 2px 4px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.fs-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.fs-val {
+  font-size: 11px;
+  font-weight: 700;
+  color: #38bdf8;
+  min-width: 26px;
+  text-align: center;
+}
+
+.field-act-btn.delete-btn {
+  color: #f87171;
+}
+
+.field-act-btn.delete-btn:hover {
+  background: rgba(239, 68, 68, 0.18);
+  color: #ef4444;
+}
+
+/* Deleted Field State */
+.field-item.is-deleted {
+  opacity: 0.65;
+  background: rgba(239, 68, 68, 0.06);
+  border-color: rgba(239, 68, 68, 0.25);
+}
+
+.field-item.is-deleted input {
+  text-decoration: line-through;
+  color: #94a3b8;
+}
+
+.btn-undo-delete {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #fca5a5;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-xs);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.15s;
+}
+
+.btn-undo-delete:hover {
+  background: rgba(239, 68, 68, 0.3);
+  color: #ffffff;
+}
+
+/* Deleted inline text overlay: Whiteout solid mask in preview */
+.pdf-text-item.is-deleted {
+  background-color: #ffffff !important;
+  color: transparent !important;
+  box-shadow: inset 0 0 0 1px rgba(239, 68, 68, 0.4);
+  pointer-events: auto;
+  user-select: none;
+}
+
+/* ==========================================================================
+   Custom Elements Layer (Draggable Text & Images)
+   ========================================================================== */
+.pdf-custom-elements-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 50;
+}
+
+/* Draggable Custom Text */
+.pdf-custom-text-item {
+  position: absolute;
+  pointer-events: auto;
+  cursor: move;
+  background: #ffffff;
+  color: #000000;
+  border: 1.5px dashed #3b82f6;
+  border-radius: 3px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 6px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  user-select: none;
+  min-width: 40px;
+  min-height: 24px;
+}
+
+.pdf-custom-text-item:focus-within,
+.pdf-custom-text-item.selected {
+  border: 1.5px solid #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
+}
+
+.custom-text-content {
+  outline: none;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+  cursor: text;
+  min-width: 20px;
+  white-space: nowrap;
+}
+
+.custom-text-del-btn {
+  position: absolute;
+  top: -9px;
+  right: -9px;
+  width: 18px;
+  height: 18px;
+  background: #ef4444;
+  color: #ffffff;
+  border: none;
+  border-radius: 50%;
+  font-size: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.pdf-custom-text-item:hover .custom-text-del-btn,
+.pdf-custom-text-item:focus-within .custom-text-del-btn {
+  opacity: 1;
+}
+
+/* Draggable & Resizable Image Element */
+.pdf-custom-image-item {
+  position: absolute;
+  pointer-events: auto;
+  cursor: move;
+  border: 2px dashed #3b82f6;
+  border-radius: 4px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  user-select: none;
+}
+
+.pdf-custom-image-item:hover,
+.pdf-custom-image-item.selected {
+  border-color: #2563eb;
+  border-style: solid;
+}
+
+.custom-img-el {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
+}
+
+.img-resize-handle {
+  position: absolute;
+  bottom: -6px;
+  right: -6px;
+  width: 12px;
+  height: 12px;
+  background: #2563eb;
+  border: 2px solid #ffffff;
+  border-radius: 2px;
+  cursor: nwse-resize;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.img-delete-btn {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 20px;
+  height: 20px;
+  background: #ef4444;
+  color: #ffffff;
+  border: none;
+  border-radius: 50%;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.pdf-custom-image-item:hover .img-delete-btn {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   Page Reorder Modal
+   ========================================================================== */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(5, 8, 16, 0.82);
+  backdrop-filter: blur(12px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-dialog {
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  width: 100%;
+  max-width: 780px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.modal-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.modal-title h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.btn-close-modal {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: var(--radius-xs);
+  transition: all 0.15s;
+}
+
+.btn-close-modal:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.modal-body {
+  padding: 20px 24px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.modal-hint {
+  font-size: 13px;
+  color: #94a3b8;
+  margin-bottom: 18px;
+}
+
+.pages-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 16px;
+}
+
+.page-order-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-md);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  user-select: none;
+  cursor: grab;
+}
+
+.page-order-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: #3b82f6;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+}
+
+.page-order-card.dragging {
+  opacity: 0.4;
+  border-style: dashed;
+}
+
+.page-order-thumb-wrap {
+  width: 100%;
+  aspect-ratio: 1 / 1.414;
+  background: #ffffff;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-order-thumb-canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.page-order-badge {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #f8fafc;
+  background: rgba(37, 99, 235, 0.3);
+  border: 1px solid rgba(59, 130, 246, 0.5);
+  border-radius: var(--radius-full);
+  padding: 2px 10px;
+}
+
+.page-order-actions {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+}
+
+.btn-move-page {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #cbd5e1;
+  padding: 4px 6px;
+  border-radius: var(--radius-xs);
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-move-page:hover:not(:disabled) {
+  background: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
+}
+
+.btn-move-page:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.btn-modal-secondary {
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #cbd5e1;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-modal-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
 }
 
 

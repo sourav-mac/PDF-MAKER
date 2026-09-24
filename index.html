@@ -71,6 +71,16 @@
           </button>
         </div>
 
+        <!-- Quick Insert Tools in Sidebar -->
+        <div class="sidebar-quick-tools" id="sidebar-quick-tools" style="display: none;">
+          <button type="button" class="sidebar-tool-btn" id="sidebar-btn-add-text">
+            <i class="fa-solid fa-font"></i> Add Text
+          </button>
+          <button type="button" class="sidebar-tool-btn" id="sidebar-btn-add-image">
+            <i class="fa-solid fa-image"></i> Add Image
+          </button>
+        </div>
+
         <!-- Dynamic Form Fields List Container -->
         <div class="extracted-fields-container" id="extracted-fields-container">
           <div class="fields-list" id="pdf-fields-list" style="display: none;"></div>
@@ -96,6 +106,20 @@
       <div class="toolbar no-print">
         <div class="document-meta">
           <span class="doc-title" id="preview-header-title">PDF Preview</span>
+        </div>
+
+        <!-- Editor Quick Tools (Add Text, Add Image, Reorder) -->
+        <div class="editor-quick-tools" id="editor-quick-tools" style="display: none;">
+          <button type="button" class="tool-btn" id="tool-add-text" title="Add New Text Block">
+            <i class="fa-solid fa-font"></i> <span>Add Text</span>
+          </button>
+          <button type="button" class="tool-btn" id="tool-add-image" title="Add Image to Page">
+            <i class="fa-solid fa-image"></i> <span>Add Image</span>
+          </button>
+          <button type="button" class="tool-btn" id="tool-reorder-pages" title="Reorder PDF Pages">
+            <i class="fa-solid fa-arrows-up-down-left-right"></i> <span>Reorder Pages</span>
+          </button>
+          <input type="file" id="image-file-input" accept="image/png, image/jpeg, image/webp" style="display: none;">
         </div>
 
         <!-- Multi-page Navigator -->
@@ -170,6 +194,7 @@
           <div class="custom-pdf-stage" id="custom-pdf-stage" style="display: none;">
             <canvas id="pdf-render-canvas" class="pdf-render-canvas"></canvas>
             <div id="pdf-text-layer" class="pdf-text-layer"></div>
+            <div id="pdf-custom-elements-layer" class="pdf-custom-elements-layer"></div>
             <div id="pdf-annotations-layer" class="pdf-annotations-layer"></div>
 
             <div class="viewport-drop-hint" id="viewport-drop-hint">
@@ -186,6 +211,29 @@
       <button type="button" id="m-btn-download" class="mobile-act-btn btn-m-primary">
         <i class="fa-solid fa-file-arrow-down"></i> Download PDF
       </button>
+    </div>
+  </div>
+
+  <!-- Reorder Pages Modal -->
+  <div class="modal-backdrop" id="reorder-modal" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title">
+          <i class="fa-solid fa-arrows-up-down-left-right text-primary"></i>
+          <h3>Reorder PDF Pages</h3>
+        </div>
+        <button type="button" class="btn-close-modal" id="btn-close-reorder-modal">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-hint">Use <strong>Move Left / Move Right</strong> or drag cards to rearrange the page sequence for the exported PDF.</p>
+        <div class="pages-grid" id="reorder-pages-grid"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-modal-secondary" id="btn-cancel-reorder">Cancel</button>
+        <button type="button" class="btn btn-primary" id="btn-apply-reorder">Save & Apply Order</button>
+      </div>
     </div>
   </div>
 
